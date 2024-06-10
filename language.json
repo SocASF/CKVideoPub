@@ -1,0 +1,26 @@
+{
+    "es": {
+        "translation": {
+            "0236d4bbL": "Modo Luz",
+            "0236d4bbD": "Modo Noche",
+            "7531e42d": "Puedes seguir las <b>redes sociales</b> de <b>%project%</b>",
+            "ec38b597": "Enlaces",
+            "9b3f8501": "Aviso Legal",
+            "055b10a2": "Contacto",
+            "725c2034": "<b>%original%</b> mediante <b>%fullname%</b> y <b>%group%</b> por <b>%author%</b>",
+            "eb55718e": "Acceder"
+        }
+    },
+    "en": {
+        "translation": {
+            "0236d4bbL": "Light Mode",
+            "0236d4bbD": "Night Mode",
+            "7531e42d": "You can follow the <b>social networks</b> of <b>%project%</b>",
+            "ec38b597": "Links",
+            "9b3f8501": "Legal Warning",
+            "055b10a2": "Contact",
+            "725c2034": "<b>%original%</b> by <b>%fullname%</b> and <b>%group%</b> by <b>%author%</b>",
+            "eb55718e": "To Access"
+        }
+    }
+}

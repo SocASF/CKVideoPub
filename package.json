@@ -1,0 +1,65 @@
+{
+  "name": "ckglobapp-ckvideopub",
+  "description": "definición de la V2 de la versión web de la imprenta digital de polet muñiz en el proyecto",
+  "version": "1.0.0",
+  "main": "main.tsx",
+  "type": "module",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SocASF/CKVideoPub.git"
+  },
+  "scripts": {
+    "dev": "bunx --bun vite",
+    "build": "vite build"
+  },
+  "keywords": [
+    "CodeInk",
+    "Service Otaku Comunity",
+    "SocASF",
+    "ASFrike",
+    "Marloy P. Harmoon Therdson",
+    "Akira Yuto Suzuki",
+    "Kevin Francisco Muñiz Herrera",
+    "Anethxa",
+    "Piwonga",
+    "Akira",
+    "Policemod27",
+    "Proyecto Global",
+    "LxingA",
+    "Vídeos Públicos",
+    "Youtube v2",
+    "Mobile Legends",
+    "Minecraft",
+    "Genshin Impact",
+    "Wuthering Waves",
+    "Black Desert Online",
+    "Blue Protocol",
+    "ZZZ"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/SocASF/CKVideoPub",
+  "devDependencies": {
+    "@types/node": "^20.12.10",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-helmet": "^6.1.11",
+    "@types/react-lazy-load-image-component": "^1.6.4",
+    "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.10.3",
+    "crypto-hash": "^3.0.0",
+    "graphql": "^16.8.1",
+    "i18next": "^23.11.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-helmet": "^6.1.0",
+    "react-i18next": "^14.1.2",
+    "react-lazy-load-image-component": "^1.6.0",
+    "react-loading-skeleton": "^3.4.0",
+    "react-router-dom": "^6.23.0"
+  }
+}
