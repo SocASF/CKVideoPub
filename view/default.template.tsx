@@ -8,7 +8,6 @@
 import {Fragment} from 'react';
 import ComponentHeader from '../components/header.component';
 import ComponentFooter from '../components/footer.component';
-import GlobalContext from '../context/global.context';
 import type {ReactNode} from 'react';
 
 /** Plantilla Predeterminada de la Aplicación */
@@ -17,14 +16,12 @@ export default function Template({children}:{
     children: ReactNode
 }){
     return (
-        <GlobalContext>
-            <Fragment>
-                <div className="container">
-                    <ComponentHeader />
-                    {children}
-                    <ComponentFooter />
-                </div>
-            </Fragment>
-        </GlobalContext>
+        <Fragment>
+            <div className="container">
+                <ComponentHeader />
+                {children}
+                <ComponentFooter />
+            </div>
+        </Fragment>
     );
 };

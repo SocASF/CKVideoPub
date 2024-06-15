@@ -7,10 +7,12 @@
 */
 import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
+import {ApolloProvider} from '@apollo/client';
 import Storage,{Provider} from './util/storage';
 import API from './util/fetcher';
 import Application from './app';
 import DOM from './util/element';
+import GraphQL from './bin/graphql';
 
 /** Definición de las Relaciones de los Elementos DOM para la Aplicación */
 export const relsheaper = {
@@ -24,7 +26,7 @@ API()["then"](response => {
     else{
         Storage["set"]("global",response);
         document["documentElement"]["setAttribute"]("version",(response["version"]));
-        const _file_: string[] = ["style.css","script.js","favicon.ico"];
+        const _file_: string[] = ["style.css","additional.css","script.js","favicon.ico"];
         response["resource"]["filter"](({name}) => (_file_["includes"](name)))["forEach"](({name,mime,key},i) => {
             const _conditional_ = name["endsWith"]("js");
             const id: string = "sck-" + (name["split"](".")[0]);
@@ -49,7 +51,9 @@ API()["then"](response => {
             });
             if(i == (_file_["length"] - 1)) createRoot(document["getElementById"]("root") as HTMLElement)["render"](
                 <StrictMode>
-                    <Application />
+                    <ApolloProvider client={GraphQL}>
+                        <Application />
+                    </ApolloProvider>
                 </StrictMode>
             );
         });

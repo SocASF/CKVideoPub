@@ -13,13 +13,26 @@ interface GlobalPrototype {
     /** Funcionalidad para la Mutación del Estado en el Contexto */
     mutate?: Dispatch<GlobalAction>,
     /** Indicador del Modo Obscuro en la Aplicación */
-    dark: boolean
+    dark: boolean,
+    /** Objeto con la Información del Juego en el Contexto Actual */
+    gameContext?: {
+        /** Identificador Único (UUID) del Juego en la Base de Datos */
+        identified: string,
+        /** Nombre del Juego desde la Base de Datos */
+        name: string,
+        /** Descripción Acerca del Juego desde la Base de Datos */
+        description?: string,
+        /** Identificador Único (UUID) del Fondo de Pantalla del Juego desde la Base de Datos */
+        image: string
+    },
+    /** Identificador Único (UUID) del Vídeo para el Reproductor Local de la Aplicación */
+    videoID?: string
 };
 
 /** Prototipo con el Objeto con la Acción del Contexto */
 type GlobalAction = {
     /** Nombre del Accionador para la Mutación en el Contexto */
-    action: "AC_DARKMODE_SET",
+    action: "AC_DARKMODE_SET" | "AC_GAMECTX_SET" | "AC_VIDEOCTX_SET",
     /** Dato con los Parámetros Esenciales para el Accionador */
     payload: any
 };
@@ -33,8 +46,22 @@ export const InitialState: GlobalPrototype = {
 export const Context = (createContext<GlobalPrototype>(InitialState));
 
 /** Reducedor Local para la Mutación del Estado en el Contexto */
-const Reducer = (state:GlobalPrototype,{action,payload}:GlobalAction) => {
+const Reducer = ((state:GlobalPrototype,{action,payload}:GlobalAction) => {
     switch(action){
+        /** Definición del Vídeo Currente para el Reproductor Local */
+        case "AC_VIDEOCTX_SET":
+            state["videoID"] = (payload);
+            return {...state};
+        /** Definición de la Raíz del Juego Activo en la Aplicación */
+        case "AC_GAMECTX_SET":
+            switch(payload["method"]){
+                case "add":
+                    state["gameContext"] = payload["value"];
+                break;
+                case "remove":
+                    delete state["gameContext"];
+                break;
+            }return {...state};
         /** Mutación del Tema Actual en la Aplicación */
         case "AC_DARKMODE_SET":
             document["documentElement"]["setAttribute"]("data-mdb-theme",(payload ? "dark" : "light"));
@@ -43,7 +70,7 @@ const Reducer = (state:GlobalPrototype,{action,payload}:GlobalAction) => {
         default:
             return state;
     }
-};
+});
 
 /** Componente con la Referencia del Proveedor del Contexto */
 export default function Provider({children}:{

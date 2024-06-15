@@ -8,7 +8,19 @@
             "9b3f8501": "Aviso Legal",
             "055b10a2": "Contacto",
             "725c2034": "<b>%original%</b> mediante <b>%fullname%</b> y <b>%group%</b> por <b>%author%</b>",
-            "eb55718e": "Acceder"
+            "eb55718e": "Acceder",
+            "9c524118": "Publicado %date_created%",
+            "0ced5c89T": "Lista de los Juegos",
+            "0ced5c89D": "Les comparto por este medio los juegos que he jugado, compartiéndoles momentos divertidos y épicos",
+            "7bea6c1f1": "Visualizar",
+            "7bea6c1f2": "No Disponible",
+            "7bea6c1f3": "Ingresando...",
+            "b171b2b0": "mostrando %celements% de %telements% juegos totales",
+            "58121785": "Listado de los Vídeos de %game%",
+            "2f1527131": "Ver Vídeo",
+            "2f1527132": "Obteniendo...",
+            "bfaa3a82": "mostrando %celements% de %telements% vídeos de %game% totales",
+            "c8ad0a14": "%count% vistas"
         }
     },
     "en": {
@@ -20,7 +32,19 @@
             "9b3f8501": "Legal Warning",
             "055b10a2": "Contact",
             "725c2034": "<b>%original%</b> by <b>%fullname%</b> and <b>%group%</b> by <b>%author%</b>",
-            "eb55718e": "To Access"
+            "eb55718e": "To Access",
+            "9c524118": "Published %date_created%",
+            "0ced5c89T": "Games List",
+            "0ced5c89D": "I share with you here the games I have played, sharing fun and epic moments",
+            "7bea6c1f1": "Visualize",
+            "7bea6c1f2": "Not Available",
+            "7bea6c1f3": "Entering...",
+            "b171b2b0": "showing %celements% of %telements% total games",
+            "58121785": "List of %game% Videos",
+            "2f1527131": "Watch Video",
+            "2f1527132": "Getting...",
+            "bfaa3a82": "showing %celements% of %telements% total %game% videos",
+            "c8ad0a14": "%count% views"
         }
     }
 }

@@ -19,7 +19,7 @@ export default function SEO({children,strategy}:{
     /** Objeto con la Información para Establecer el SEO en la Plantilla */
     strategy: SEOPrototype
 }){
-    const {name,project,slogan,description,keywords}: Application = (Storage["get"]("global"));
+    const {name,project,slogan,description,keywords,alternative}: Application = (Storage["get"]("global"));
     const keyword: string[] = (strategy["keyword"] ?? keywords)!;
     let _kw_: string = "";
     for(let y = 0; y <= (keyword["length"] - 1); y++) _kw_ += (keyword[y]) + ",";
@@ -27,7 +27,7 @@ export default function SEO({children,strategy}:{
         <Fragment>
             <HTML>
                 <title>
-                    {strategy["title"] ?? slogan} - {name} [{project}]
+                    {strategy["title"] ?? slogan} - {alternative![0]} {name} [{project}]
                 </title>
                 <meta name="description" content={strategy["description"] ?? description}/>
                 <meta name="keywords" content={_kw_["substring"](0,(_kw_["length"] - 1))}/>
