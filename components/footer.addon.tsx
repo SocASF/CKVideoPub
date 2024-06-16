@@ -10,27 +10,6 @@ import {useTranslation} from 'react-i18next';
 import Storage from '../util/storage';
 import type Application from '../types/global';
 
-/** Traducción de los Iconos de FA para las Redes Sociales */
-export const socialIcon: Record<string,({
-    /** Nombre del Icono Identificador para la Red Social */
-    icon: string,
-    /** Nombre de la Etiqueta a Titular en la Red Social */
-    label: string
-})> = {
-    fb: {
-        icon: "facebook",
-        label: "Facebook"
-    },
-    tt: {
-        icon: "twitter",
-        label: "Twitter"
-    },
-    fm: {
-        icon: "github",
-        label: "GitHub"
-    }
-};
-
 /** Complemento con el Contenedor de las Redes Sociales para el Píe de Página de la Aplicación */
 export const AddonFooterSocialContainer = () => {
     const {project,social}: Application = (Storage["get"]("global"));
@@ -45,9 +24,9 @@ export const AddonFooterSocialContainer = () => {
                 }}/>
             </div>
             <div>
-                {social?.map(({name,url},iterator) => (
-                    <a title={socialIcon[name]["label"]} className="me-4 text-reset" key={iterator} href={url} target="_blank">
-                        <i className={`fab fa-${socialIcon[name]["icon"]}`}></i>
+                {social?.map(({url,icon},iterator) => (
+                    <a className="me-4 text-reset" key={iterator} href={`https://${url}`} target="_blank">
+                        <i className={`fab fa-${icon}`}></i>
                     </a>
                 ))}
             </div>
