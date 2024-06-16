@@ -86,6 +86,7 @@ export const GraphQLVideoSuggest = (gql`
                     ...d1f9097bb
                     thumbnail
                     createAt
+                    view
                 }
             }
         }

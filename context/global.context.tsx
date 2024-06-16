@@ -5,8 +5,11 @@
 @description Definición del Contexto Global para la Aplicación
 @date 09/06/24 12:00AM
 */
-import {createContext,useReducer} from 'react';
+import {createContext,useReducer,useState,useEffect} from 'react';
 import type {ReactNode,Dispatch} from 'react';
+
+/** Condición de Inicialización sí el Dispositivo es Móvil */
+const conditionalMovil: string = "(max-width:600px)";
 
 /** Prototipo con el Objeto con la Información para el Contexto Global */
 interface GlobalPrototype {
@@ -26,7 +29,9 @@ interface GlobalPrototype {
         image: string
     },
     /** Identificador Único (UUID) del Vídeo para el Reproductor Local de la Aplicación */
-    videoID?: string
+    videoID?: string,
+    /** Indicador sí el Dispositivo está en Modo Móvil para la Aplicación */
+    mobile: boolean
 };
 
 /** Prototipo con el Objeto con la Acción del Contexto */
@@ -39,7 +44,8 @@ type GlobalAction = {
 
 /** Objeto con el Estado Inicial del Contexto */
 export const InitialState: GlobalPrototype = {
-    dark: true
+    dark: true,
+    mobile: (window["matchMedia"](conditionalMovil)["matches"])
 };
 
 /** Instancia del Contexto para la Aplicación */
@@ -78,8 +84,12 @@ export default function Provider({children}:{
     children: ReactNode
 }){
     const [state,mutate] = (useReducer(Reducer,InitialState));
+    const [mobile,setMobile] = (useState<boolean>(InitialState["mobile"]));
+    useEffect(() => {
+        window["matchMedia"](conditionalMovil)["addEventListener"]("change",({matches}) => (setMobile(matches)));
+    },[]);
     return (
-        <Context.Provider value={{...state,mutate}}>
+        <Context.Provider value={{...state,mutate,mobile}}>
             {children}
         </Context.Provider>
     );

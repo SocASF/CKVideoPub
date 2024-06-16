@@ -7,7 +7,8 @@
 */
 import 'react-loading-skeleton/dist/skeleton.css';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import 'moment/dist/locale/es';
+import 'moment-timezone';
+import 'moment/locale/es';
 import {createBrowserRouter,createRoutesFromElements,Route,RouterProvider as Provider} from 'react-router-dom';
 import {I18nextProvider} from 'react-i18next';
 import ListenerProvider from './context/listener.context';

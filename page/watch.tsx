@@ -15,7 +15,7 @@ import {Texted} from '../util/element';
 import {LazyLoadImage} from 'react-lazy-load-image-component';
 import {Provider} from '../util/storage';
 import Loader,{SkeletonTheme} from 'react-loading-skeleton';
-import Timer from 'moment';
+import Moment from 'react-moment';
 import SEO from '../view/seo.template';
 import Template from '../view/default.template';
 import type {ReactNode} from 'react';
@@ -66,7 +66,7 @@ const WatchListSuggestContainer = ({character}:{
     };
     const [perPage] = (useState<number>(4));
     const {gameContext,videoID,mutate} = (useContext(GlobalContext));
-    const {i18n:{language}} = (useTranslation());
+    const {i18n:{language},t} = (useTranslation());
     const {loading,data} = (useQuery(GraphQLVideoSuggest,{
         fetchPolicy: "cache-and-network",
         context: {
@@ -83,6 +83,7 @@ const WatchListSuggestContainer = ({character}:{
             af28f7203: true
         }
     }));
+    Moment["globalLocale"] = (language);
     if(loading){
         for(let y = 0; y <= (perPage - 1); y++) _loader_["push"](
             <div key={y} className="col mb-2">
@@ -119,9 +120,9 @@ const WatchListSuggestContainer = ({character}:{
     }else{
         const _dt_: any[] = (data["fbd45e939"])["rs"]["ob"];
         return (_dt_["length"] == 0 ? (
-            <ContainerError message={"no hay más vídeos por mostrar"}/>
+            <ContainerError message={t("6d49b11e")}/>
         ) : (
-            <div className="row row-cols-1">
+            <div className="row row-cols-1" style={{marginBottom:-30}}>
                 {_dt_["map"]((d,i) => (
                     <div key={i} className="col mb-2">
                         <div className="card h-100" style={{cursor:"pointer"}} onClick={event => {
@@ -139,7 +140,7 @@ const WatchListSuggestContainer = ({character}:{
                                 }
                             })}/>
                             <div className="card-body">
-                                <small className="card-title">
+                                <small className="card-title" style={{position:"relative",top:-6}}>
                                     <strong>
                                         {Texted(d["title"],{
                                             hero: String(character?.label)
@@ -147,7 +148,7 @@ const WatchListSuggestContainer = ({character}:{
                                     </strong>
                                 </small>
                                 {d["description"] && (
-                                    <p className="card-text" style={{fontSize:12,position:"relative",top:6}}>
+                                    <p className="card-text" style={{fontSize:12,position:"relative",top:4}}>
                                         {Texted(d["description"],{
                                             hero: String(character?.label)
                                         })["substring"](0,60)}...
@@ -155,9 +156,18 @@ const WatchListSuggestContainer = ({character}:{
                                 )}
                             </div>
                             <div className="card-footer">
-                                <small className="text-muted">
-                                    {(new Date(Date["parse"](d["createAt"])))["toLocaleString"]()}
-                                </small>
+                                <div className="row">
+                                    <div className="col">
+                                        <Moment fromNow>
+                                            {d["createAt"]}
+                                        </Moment>
+                                    </div>
+                                    <div className="col">
+                                        {Texted(t("c8ad0a14"),{
+                                            count: d["view"]
+                                        })}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -173,7 +183,8 @@ const WatchSuggestContainer = ({character}:{
     character?: WatchCharacter
 }) => {
     const [current,setCurrent] = (useState<string>("740c291d"));
-    const {gameContext} = (useContext(GlobalContext));
+    const {gameContext,mobile} = (useContext(GlobalContext));
+    const {t} = (useTranslation());
     let _container_: ReactNode = null;
     switch(current){
         case "740c291d":
@@ -207,17 +218,17 @@ const WatchSuggestContainer = ({character}:{
         break;
     }return (
         <section className="pb-4 mt-3">
-            <div className="border rounded-5 overflow-auto" style={{maxHeight:450}}>
+            <div className={mobile ? "border rounded-5" : "border rounded-5 overflow-auto"} style={mobile ? undefined : {maxHeight:450}}>
                 <section className="pb-4">
-                    <ul className="nav nav-pills mb-3 d-flex justify-content-center">
+                    <ul className="nav nav-pills mt-2 mb-3 d-flex justify-content-center">
                         {([
                             {
-                                label: "Relacionados",
+                                label: t("f440e0a41"),
                                 icon: "film",
                                 key: "740c291d"
                             },
                             {
-                                label: "Personaje",
+                                label: t("f440e0a42"),
                                 icon: "street-view",
                                 key: "0791b44f"
                             }
@@ -277,7 +288,7 @@ const WatchInformationContainer = ({title,description,views,uploadAt}:{
 }) => {
     const [active,setActive] = (useState<boolean>(false));
     const {t,i18n:{language}} = (useTranslation());
-    Timer["locale"](language);
+    Moment["globalLocale"] = (language);
     return (
         <div className="accordion accordion-borderless mb-2" id="WatchAcordionMoreInformation">
             <div className="accordion-item">
@@ -299,7 +310,9 @@ const WatchInformationContainer = ({title,description,views,uploadAt}:{
                                     <strong>
                                         {Texted(t("c8ad0a14"),{
                                             count: String(views)
-                                        })} | {Timer(uploadAt)["startOf"]("date")["fromNow"]()}
+                                        })} | <Moment fromNow>
+                                            {uploadAt}
+                                        </Moment>
                                     </strong>
                                 </div>
                             </div>
@@ -308,7 +321,7 @@ const WatchInformationContainer = ({title,description,views,uploadAt}:{
                 </h2>
                 <div className={`accordion-collapse collapse${active ? " show" : ""}`} aria-labelledby="WatchAcordionMoreInformationH2" data-mdb-parent="#WatchAcordionMoreInformation" id="WatchAcordionMoreInformationCTX">
                     <div className="accordion-body">
-                        {description ?? "No se ha proporcionado una descripción al vídeo"}
+                        {description ?? t("8347d032")}
                     </div>
                 </div>
             </div>
@@ -318,7 +331,7 @@ const WatchInformationContainer = ({title,description,views,uploadAt}:{
 
 /** Página para Mostrar la Vista del Reproductor del Vídeo Actual para la Aplicación */
 export default function Watch(){
-    const {videoID,gameContext} = (useContext(GlobalContext));
+    const {videoID,gameContext,mobile} = (useContext(GlobalContext));
     if(!videoID) return (
         <Navigate to="/"/>
     );
@@ -361,8 +374,8 @@ export default function Watch(){
                         hero: _dt_["character"]?.label
                     }))
                 }}>
-                    <div className="row">
-                        <div className="col-8">
+                    <div className={mobile ? "container" : "row"}>
+                        <div className={mobile ? undefined : "col-8"}>
                             <WatchPlayerContainer uri={_dt_["endpoint"]}/>
                             <WatchInformationContainer {...{
                                 title: Texted(_dt_["title"],{
@@ -375,7 +388,7 @@ export default function Watch(){
                                 uploadAt: _dt_["createAt"]
                             }}/>
                         </div>
-                        <div className="col-4">
+                        <div className={mobile ? undefined : "col-4"}>
                             <WatchSuggestContainer character={_dt_["character"]}/>
                         </div>
                     </div>

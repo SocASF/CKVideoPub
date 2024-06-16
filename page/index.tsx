@@ -15,8 +15,8 @@ import {useNavigate} from 'react-router-dom';
 import {LazyLoadImage} from 'react-lazy-load-image-component';
 import Loader,{SkeletonTheme} from 'react-loading-skeleton';
 import Storage,{Provider} from '../util/storage';
+import Moment from 'react-moment';
 import Template from '../view/default.template';
-import Timer from 'moment';
 import SEO from '../view/seo.template';
 import type {ReactNode,Dispatch,SetStateAction} from 'react';
 import type Application from '../types/global';
@@ -139,7 +139,7 @@ function InitState(){
     const [changed,setChanged] = (useState<string>());
     const [perPage] = (useState<number>(4));
     const {i18n:{language},t} = (useTranslation());
-    const {mutate} = (useContext(GlobalContext));
+    const {mutate,mobile} = (useContext(GlobalContext));
     const {data,loading} = (useQuery(GraphQLGameListener,{
         notifyOnNetworkStatusChange: false,
         variables: {
@@ -153,10 +153,10 @@ function InitState(){
         }
     }));
     const navigator = (useNavigate());
-    Timer["locale"](language);
+    Moment["globalLocale"] = (language);
     if(loading){
         for(let t = 0; t <= (perPage - 1); t++) _cd_["push"](
-            <div key={t} className="col-6 mt-3">
+            <div key={t} className={`col-${mobile ? "12 text-center" : 6} mt-3`}>
                 <div className="card">
                     <div className="row g-0">
                         <div className="col-md-4">
@@ -204,15 +204,14 @@ function InitState(){
                 <IndexHeaderContainer />
                 <div className="row mb-3">
                     {(_dt_["ob"] as any[])["map"]((d,i) => (
-                        <div key={i} className="col-6 mt-3">
+                        <div key={i} className={`col-${mobile ? "12 text-center" : 6} mt-3`}>
                             <div className="card">
                                 <div className="row g-0">
                                     <div className="col-md-4">
                                         <LazyLoadImage effect="blur" className="img-fluid rounded-start" src={Provider({
                                             identified: d["illustration"]["filter"]((o:any) => (o["name"] == "cover"))[0]["key"],
                                             parameter: {
-                                                format: "webp",
-                                                width: 400
+                                                format: "webp"
                                             }
                                         })}/>
                                     </div>
@@ -229,10 +228,11 @@ function InitState(){
                                                 </p>
                                             )}
                                             <p className="card-text">
-                                                <small className="text-muted">
-                                                    {Texted(t("9c524118"),{
-                                                        date_created: Timer(d["createAt"])["startOf"]("h")["fromNow"]()
-                                                    })}
+                                                <small title={(new Date(Date["parse"](d["createAt"])))["toLocaleString"]()} className="text-muted">
+                                                    {t("9c524118")}
+                                                    <Moment fromNow>
+                                                        {d["createAt"]}
+                                                    </Moment>
                                                 </small>
                                             </p>
                                             <button data-mdb-ripple-init className="btn btn-primary" disabled={!d["available"] || (typeof(changed) == "string")} onClick={event => {

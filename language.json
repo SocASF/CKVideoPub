@@ -9,7 +9,7 @@
             "055b10a2": "Contacto",
             "725c2034": "<b>%original%</b> mediante <b>%fullname%</b> y <b>%group%</b> por <b>%author%</b>",
             "eb55718e": "Acceder",
-            "9c524118": "Publicado %date_created%",
+            "9c524118": "Publicado ",
             "0ced5c89T": "Lista de los Juegos",
             "0ced5c89D": "Les comparto por este medio los juegos que he jugado, compartiéndoles momentos divertidos y épicos",
             "7bea6c1f1": "Visualizar",
@@ -20,7 +20,11 @@
             "2f1527131": "Ver Vídeo",
             "2f1527132": "Obteniendo...",
             "bfaa3a82": "mostrando %celements% de %telements% vídeos de %game% totales",
-            "c8ad0a14": "%count% vistas"
+            "c8ad0a14": "%count% vistas",
+            "8347d032": "No se ha proporcionado una descripción al vídeo",
+            "f440e0a41": "Sugerido",
+            "f440e0a42": "Personaje",
+            "6d49b11e": "no hay más vídeos por mostrar"
         }
     },
     "en": {
@@ -33,7 +37,7 @@
             "055b10a2": "Contact",
             "725c2034": "<b>%original%</b> by <b>%fullname%</b> and <b>%group%</b> by <b>%author%</b>",
             "eb55718e": "To Access",
-            "9c524118": "Published %date_created%",
+            "9c524118": "Published ",
             "0ced5c89T": "Games List",
             "0ced5c89D": "I share with you here the games I have played, sharing fun and epic moments",
             "7bea6c1f1": "Visualize",
@@ -44,7 +48,11 @@
             "2f1527131": "Watch Video",
             "2f1527132": "Getting...",
             "bfaa3a82": "showing %celements% of %telements% total %game% videos",
-            "c8ad0a14": "%count% views"
+            "c8ad0a14": "%count% views",
+            "8347d032": "No description provided for the video",
+            "f440e0a41": "Suggested",
+            "f440e0a42": "Character",
+            "6d49b11e": "there are no more videos to show"
         }
     }
 }

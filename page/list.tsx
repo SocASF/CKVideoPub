@@ -15,6 +15,7 @@ import {Texted} from '../util/element';
 import {Provider} from '../util/storage';
 import {LazyLoadImage} from 'react-lazy-load-image-component';
 import Loader,{SkeletonTheme} from 'react-loading-skeleton';
+import Moment from 'react-moment';
 import SEO from '../view/seo.template';
 import Template from '../view/default.template';
 import type {ReactNode,Dispatch,SetStateAction} from 'react';
@@ -147,6 +148,7 @@ export default function List(){
     }));
     const _navigator_ = (useNavigate());
     const _ctx_: ReactNode[] = [];
+    Moment["globalLocale"] = (language);
     if(loading){
         for(let o = 0; o <= (perPage - 1); o++) _ctx_["push"](
             <div className="col" key={o}>
@@ -244,8 +246,10 @@ export default function List(){
                                             </div>
                                             <div className="col">
                                                 <i className="far fa-calendar"></i>
-                                                <span style={{position:"relative",left:6}}>
-                                                    {(new Date(Date["parse"](d["createAt"])))["toLocaleString"]()}
+                                                <span title={(new Date(Date["parse"](d["createAt"])))["toLocaleString"]()} style={{position:"relative",left:6}}>
+                                                    <Moment fromNow>
+                                                        {d["createAt"]}
+                                                    </Moment>
                                                 </span>
                                             </div>
                                             {d["character"] && (
