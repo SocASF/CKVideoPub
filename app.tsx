@@ -18,6 +18,7 @@ import i18n from './bin/i18n';
 import HomePage from './page';
 import ListPage from './page/list';
 import WatchPage from './page/watch';
+import ErrorPage from './view/error.template';
 
 /** Inicialización de la Aplicación en el DOM */
 export default function App(){
@@ -25,7 +26,9 @@ export default function App(){
         <I18nextProvider {...{i18n}}>
             <GlobalProvider>
                 <Provider router={createBrowserRouter(createRoutesFromElements([
-                    <Route>
+                    <Route errorElement={
+                        <ErrorPage />
+                    }>
                         <Route index element={
                             <HomePage />
                         }/>

@@ -24,7 +24,14 @@
             "8347d032": "No se ha proporcionado una descripción al vídeo",
             "f440e0a41": "Sugerido",
             "f440e0a42": "Personaje",
-            "6d49b11e": "no hay más vídeos por mostrar"
+            "6d49b11e": "no hay más vídeos por mostrar",
+            "cc0646f50T": "Error Desconocido",
+            "cc0646f50M": "Hubo un error a procesar lo solicitado",
+            "cc0646f51T": "Prohíbido",
+            "cc0646f51M": "No estás autorizado para acceder a este recurso",
+            "cc0646f52T": "No Encontrado",
+            "cc0646f52M": "Lo sentimos, no pudimos encontrar el recurso que está intentando accesar",
+            "bb017663": "Reportar"
         }
     },
     "en": {
@@ -52,7 +59,14 @@
             "8347d032": "No description provided for the video",
             "f440e0a41": "Suggested",
             "f440e0a42": "Character",
-            "6d49b11e": "there are no more videos to show"
+            "6d49b11e": "there are no more videos to show",
+            "cc0646f50T": "Unknown Error",
+            "cc0646f50M": "There was an error processing the request",
+            "cc0646f51T": "Forbidden",
+            "cc0646f51M": "You are not authorized to access this resource",
+            "cc0646f52T": "Not Found",
+            "cc0646f52M": "Sorry, we couldn't find the resource you are trying to access",
+            "bb017663": "Report"
         }
     }
 }

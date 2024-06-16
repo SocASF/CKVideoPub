@@ -17,7 +17,9 @@ import {LazyLoadImage} from 'react-lazy-load-image-component';
 import Loader,{SkeletonTheme} from 'react-loading-skeleton';
 import Moment from 'react-moment';
 import SEO from '../view/seo.template';
+import Storage from '../util/storage';
 import Template from '../view/default.template';
+import type Application from '../types/global';
 import type {ReactNode,Dispatch,SetStateAction} from 'react';
 
 /** Utilidad Esencial para el Contenedor del Paginador para la Vista */
@@ -86,17 +88,25 @@ const ListPaginatorContainer = ({total,perPage,currentPage,callback}:{
 };
 
 /** Utilidad Esencial para el Contenedor con la Cabecera de la Vista */
-const ListHeaderContainer = ({image,title,description}:{
+export const ListHeaderContainer = ({image,title,description,external = false}:{
+    /** Identificador Único (UUID) de la Imágen Ilustrativa a Mostrar en la Cabecera */
     image: string,
+    /** Titulo a Mostrar en la Cabecera */
     title: string,
-    description?: string
+    /** Descripción Ilustrativo a Mostrar en la Cabecera */
+    description?: string,
+    /** Establecer la Imagén desde el Origen Externo */
+    external: boolean
 }) => {
+    const {t} = (useTranslation());
+    const {support}: Application = (Storage["get"]("global"));
     return (
-        <header className="mb-3">
+        <header className={external ? undefined : "mb-3"}>
             <div className="p-5 text-center bg-image" style={{
                 backgroundImage: `url(${Provider({
                     identified: image,
-                    parameter: {
+                    external,
+                    parameter: external ? undefined : {
                         format: "webp"
                     }
                 })})`,
@@ -114,6 +124,14 @@ const ListHeaderContainer = ({image,title,description}:{
                                 <h4 className="mb-3">
                                     {description}
                                 </h4>
+                            )}
+                            {external && (
+                                <button data-mdb-ripple-init className="btn btn-primary" style={{position:"relative",top:6}} onClick={event => {
+                                    event["preventDefault"]();
+                                    window["open"](`mailto:${support}`,"_self");
+                                }}>
+                                    {t("bb017663")}
+                                </button>
                             )}
                         </div>
                     </div>
@@ -177,7 +195,8 @@ export default function List(){
                 <ListHeaderContainer {...{
                     image: gameContext["image"],
                     title: gameContext["name"],
-                    description: gameContext["description"]
+                    description: gameContext["description"],
+                    external: false
                 }}/>
                 <div className="row row-cols-1 row-cols-md-2 g-4 mb-3">
                     {_ctx_}
@@ -197,7 +216,8 @@ export default function List(){
                     <ListHeaderContainer {...{
                         image: gameContext["image"],
                         title: gameContext["name"],
-                        description: gameContext["description"]
+                        description: gameContext["description"],
+                        external: false
                     }}/>
                     <div className="row row-cols-1 row-cols-md-2 g-4 mb-3">
                         {(_dt_["ob"] as any[])["map"]((d,i) => (
@@ -214,13 +234,15 @@ export default function List(){
                                     <div className="card-body text-center">
                                         <h5 className="card-title" style={{fontSize:18}}>
                                             {Texted(d["title"],{
-                                                hero: d["character"]?.label
+                                                hero: d["character"]?.label,
+                                                game: gameContext?.name
                                             })}
                                         </h5>
                                         {d["description"] && (
                                             <p className="card-text">
                                                 {Texted(d["description"],{
-                                                    hero: d["character"]?.label
+                                                    hero: d["character"]?.label,
+                                                    game: gameContext?.name
                                                 })["substring"](0,144)}...
                                             </p>
                                         )}
@@ -231,7 +253,10 @@ export default function List(){
                                                 action: "AC_VIDEOCTX_SET",
                                                 payload: d["key"]
                                             });
-                                            setTimeout(() => _navigator_("/watch"),1000);
+                                            setTimeout(() => {
+                                                _navigator_("/watch");
+                                                window["scrollTo"](0,0);
+                                            },1000);
                                         }}>
                                             {(typeof(change) == "string" && change == d["key"]) ? t("2f1527132") : t("2f1527131")}
                                         </button>

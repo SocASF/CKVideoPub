@@ -21,7 +21,7 @@ export default function Header(){
                     <LazyLoadImage src={Provider({
                         parameter: {
                             format: "webp",
-                            height: 48
+                            height: 64
                         },
                         identified: (resource["filter"](({name}) => (name == "logo.png"))[0]["key"])
                     })} effect="blur" loading="lazy" alt={`${project} ${name}`}/>

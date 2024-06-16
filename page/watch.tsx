@@ -143,14 +143,16 @@ const WatchListSuggestContainer = ({character}:{
                                 <small className="card-title" style={{position:"relative",top:-6}}>
                                     <strong>
                                         {Texted(d["title"],{
-                                            hero: String(character?.label)
+                                            hero: String(character?.label),
+                                            game: String(gameContext?.name)
                                         })}
                                     </strong>
                                 </small>
                                 {d["description"] && (
                                     <p className="card-text" style={{fontSize:12,position:"relative",top:4}}>
                                         {Texted(d["description"],{
-                                            hero: String(character?.label)
+                                            hero: String(character?.label),
+                                            game: String(gameContext?.name)
                                         })["substring"](0,60)}...
                                     </p>
                                 )}
@@ -379,10 +381,12 @@ export default function Watch(){
                             <WatchPlayerContainer uri={_dt_["endpoint"]}/>
                             <WatchInformationContainer {...{
                                 title: Texted(_dt_["title"],{
-                                    hero: _dt_["character"]?.label
+                                    hero: _dt_["character"]?.label,
+                                    game: String(gameContext?.name)
                                 }),
                                 description: Texted(_dt_["description"],{
-                                    hero: _dt_["character"]?.label
+                                    hero: _dt_["character"]?.label,
+                                    game: String(gameContext?.name)
                                 }),
                                 views: _dt_["view"],
                                 uploadAt: _dt_["createAt"]

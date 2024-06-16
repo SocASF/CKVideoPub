@@ -250,7 +250,10 @@ function InitState(){
                                                         }
                                                     }
                                                 });
-                                                setTimeout(() => navigator("/container"),1000);
+                                                setTimeout(() => {
+                                                    navigator("/container");
+                                                    window["scrollTo"](0,0);
+                                                },1000);
                                             }}>
                                                 {d["available"] ? ((typeof(changed) == "string" && changed == d["key"]) ? t("7bea6c1f3") : t("7bea6c1f1")) : t("7bea6c1f2")}
                                             </button>

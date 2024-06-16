@@ -82,7 +82,9 @@ interface Application {
         type?: string
     }[],
     /** Definición de la Frase Típica para la Aplicación */
-    slogan?: string
+    slogan?: string,
+    /** Correo Electrónico de Soporte Público para una Incidencia en Alguna Aplicación */
+    support: string
 };
 
 /** Definición del Objeto para el Paginador de la API */
