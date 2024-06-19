@@ -83,7 +83,6 @@ const WatchListSuggestContainer = ({character}:{
             af28f7203: true
         }
     }));
-    Moment["globalLocale"] = (language);
     if(loading){
         for(let y = 0; y <= (perPage - 1); y++) _loader_["push"](
             <div key={y} className="col mb-2">
@@ -199,12 +198,6 @@ const WatchSuggestContainer = ({character}:{
         case "0791b44f":
             _container_ = (
                 <div className="card">
-                    <LazyLoadImage effect="blur" className="card-img-top" src={Provider({
-                        identified: character!?.illustration["filter"](({name}) => (name == "icon"))[0]["key"],
-                        parameter: {
-                            format: "webp"
-                        }
-                    })}/>
                     <div className="card-body">
                         <h5 className="card-title">
                             {character?.label}
@@ -215,6 +208,12 @@ const WatchSuggestContainer = ({character}:{
                             })}
                         </p>
                     </div>
+                    <LazyLoadImage effect="blur" className="card-img-top" src={Provider({
+                        identified: character!?.illustration["filter"](({name}) => (name == "cover"))[0]["key"],
+                        parameter: {
+                            format: "webp"
+                        }
+                    })}/>
                 </div>
             );
         break;
@@ -289,8 +288,7 @@ const WatchInformationContainer = ({title,description,views,uploadAt}:{
     uploadAt: string
 }) => {
     const [active,setActive] = (useState<boolean>(false));
-    const {t,i18n:{language}} = (useTranslation());
-    Moment["globalLocale"] = (language);
+    const {t} = (useTranslation());
     return (
         <div className="accordion accordion-borderless mb-2" id="WatchAcordionMoreInformation">
             <div className="accordion-item">

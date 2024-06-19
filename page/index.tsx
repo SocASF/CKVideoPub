@@ -13,6 +13,7 @@ import {Texted} from '../util/element';
 import {Context as GlobalContext} from '../context/global.context';
 import {useNavigate} from 'react-router-dom';
 import {LazyLoadImage} from 'react-lazy-load-image-component';
+import {GlobalFilterContainer} from '../components/util.component';
 import Loader,{SkeletonTheme} from 'react-loading-skeleton';
 import Storage,{Provider} from '../util/storage';
 import Moment from 'react-moment';
@@ -92,16 +93,14 @@ const IndexPaginationContainer = ({currentPage,perPage,callback,total,pages,load
                     </button>
                 </li>
             </ul>
-            <p>
-                {loader ? (
-                    <Loader count={1} height={20} width={200}/>
-                ) : (
+            <p dangerouslySetInnerHTML={{
+                __html: (loader ? "..." : (
                     Texted(t("b171b2b0"),{
                         celements: ((currentPage == pages) ? (total) : (perPage * currentPage))["toString"](),
                         telements: total["toString"]()
                     })
-                )}
-            </p>
+                ))
+            }} />
         </nav>
     );
 };
@@ -137,23 +136,23 @@ function InitState(){
     const _cd_: ReactNode[] = [];
     const [currentPage,setPage] = (useState<number>(1));
     const [changed,setChanged] = (useState<string>());
-    const [perPage] = (useState<number>(4));
+    const [perPage,setPerPage] = (useState<number>(4));
     const {i18n:{language},t} = (useTranslation());
-    const {mutate,mobile} = (useContext(GlobalContext));
+    const {mutate,mobile,currentFilter} = (useContext(GlobalContext));
     const {data,loading} = (useQuery(GraphQLGameListener,{
         notifyOnNetworkStatusChange: false,
         variables: {
             a2a2f7516: {
                 a3f53e411: perPage,
                 af0afffd2: currentPage
-            }
+            },
+            a4dec699b: (currentFilter == "637b9a0e-228b-4606-9ec8-baffcf61f6cd" ? undefined : currentFilter)
         },
         context: {
             language
         }
     }));
     const navigator = (useNavigate());
-    Moment["globalLocale"] = (language);
     if(loading){
         for(let t = 0; t <= (perPage - 1); t++) _cd_["push"](
             <div key={t} className={`col-${mobile ? "12 text-center" : 6} mt-3`}>
@@ -202,68 +201,83 @@ function InitState(){
         return (
             <div>
                 <IndexHeaderContainer />
+                {!mobile && (
+                    <GlobalFilterContainer currentPerPage={perPage} callback={setPerPage} additionalOption={[
+                        {
+                            label: (Texted(t("883e7c270"),{
+                                label: (t("883e7c274"))
+                            })),
+                            value: "24f3eb68-f4a1-4c79-87f8-231d6a1b6648"
+                        }
+                    ]} disabled={currentPage > 1}/>
+                )}
                 <div className="row mb-3">
-                    {(_dt_["ob"] as any[])["map"]((d,i) => (
-                        <div key={i} className={`col-${mobile ? "12 text-center" : 6} mt-3`}>
-                            <div className="card">
-                                <div className="row g-0">
-                                    <div className="col-md-4">
-                                        <LazyLoadImage effect="blur" className="img-fluid rounded-start" src={Provider({
-                                            identified: d["illustration"]["filter"]((o:any) => (o["name"] == "cover"))[0]["key"],
-                                            parameter: {
-                                                format: "webp"
-                                            }
-                                        })}/>
-                                    </div>
-                                    <div className="col-md-8">
-                                        <div className="card-header" />
-                                        <div className="card-body">
-                                            <h5 className="card-title">
-                                                {d["title"]}
-                                            </h5>
-                                            <IndexStarContainer count={d["populate"]}/>
-                                            {d["description"] && (
-                                                <p className="card-text">
-                                                    {d["description"]}
-                                                </p>
-                                            )}
-                                            <p className="card-text">
-                                                <small title={(new Date(Date["parse"](d["createAt"])))["toLocaleString"]()} className="text-muted">
-                                                    {t("9c524118")}
-                                                    <Moment fromNow>
-                                                        {d["createAt"]}
-                                                    </Moment>
-                                                </small>
-                                            </p>
-                                            <button data-mdb-ripple-init className="btn btn-primary" disabled={!d["available"] || (typeof(changed) == "string")} onClick={event => {
-                                                event["preventDefault"]();
-                                                setChanged(d["key"]);
-                                                mutate!({
-                                                    action: "AC_GAMECTX_SET",
-                                                    payload: {
-                                                        method: "add",
-                                                        value: {
-                                                            identified: d["key"],
-                                                            name: d["title"],
-                                                            description: d["description"],
-                                                            image: d["illustration"]["filter"]((o:any) => (o["name"] == "background"))[0]["key"]
-                                                        }
-                                                    }
-                                                });
-                                                setTimeout(() => {
-                                                    navigator("/container");
-                                                    window["scrollTo"](0,0);
-                                                },1000);
-                                            }}>
-                                                {d["available"] ? ((typeof(changed) == "string" && changed == d["key"]) ? t("7bea6c1f3") : t("7bea6c1f1")) : t("7bea6c1f2")}
-                                            </button>
+                    {(_dt_["ob"] as any[])["map"]((d,i) => {
+                        const _buttonText_: string = (t("7bea6c1f1")["split"]("|")[(d["videos"] <= 1 ? 1 : 0)]);
+                        return (
+                            <div key={i} className={`col-${mobile ? "12 text-center" : 6} mt-3`}>
+                                <div className="card">
+                                    <div className="row g-0">
+                                        <div className="col-md-4">
+                                            <LazyLoadImage effect="blur" className="img-fluid rounded-start" src={Provider({
+                                                identified: d["illustration"]["filter"]((o:any) => (o["name"] == "cover"))[0]["key"],
+                                                parameter: {
+                                                    format: "webp"
+                                                }
+                                            })}/>
                                         </div>
-                                        <div className="card-footer" />
+                                        <div className="col-md-8">
+                                            <div className="card-header" />
+                                            <div className="card-body">
+                                                <h5 className="card-title">
+                                                    {d["title"]}
+                                                </h5>
+                                                <IndexStarContainer count={d["populate"]}/>
+                                                {d["description"] && (
+                                                    <p className="card-text">
+                                                        {d["description"]}
+                                                    </p>
+                                                )}
+                                                <p className="card-text" style={{position:"relative",top:-2}}>
+                                                    <small title={(new Date(Date["parse"](d["createAt"])))["toLocaleString"]()} className="text-muted">
+                                                        {t("9c524118")}
+                                                        <Moment fromNow>
+                                                            {d["createAt"]}
+                                                        </Moment>
+                                                    </small>
+                                                </p>
+                                                <button data-mdb-ripple-init className="btn btn-primary" disabled={!d["available"] || (typeof(changed) == "string")} onClick={event => {
+                                                    event["preventDefault"]();
+                                                    setChanged(d["key"]);
+                                                    mutate!({
+                                                        action: "AC_GAMECTX_SET",
+                                                        payload: {
+                                                            method: "add",
+                                                            value: {
+                                                                identified: d["key"],
+                                                                name: d["title"],
+                                                                description: d["description"],
+                                                                image: d["illustration"]["filter"]((o:any) => (o["name"] == "background"))[0]["key"]
+                                                            }
+                                                        }
+                                                    });
+                                                    setTimeout(() => {
+                                                        navigator("/container");
+                                                        window["scrollTo"](0,0);
+                                                    },1000);
+                                                }}>
+                                                    {d["available"] ? ((typeof(changed) == "string" && changed == d["key"]) ? t("7bea6c1f3") : Texted(_buttonText_,{
+                                                        count: d["videos"]
+                                                    })) : t("7bea6c1f2")}
+                                                </button>
+                                            </div>
+                                            <div className="card-footer" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
                 <IndexPaginationContainer pages={_dt_["pp"]} total={_dt_["tt"]} callback={setPage} {...{perPage,currentPage}} loader={false}/>
             </div>

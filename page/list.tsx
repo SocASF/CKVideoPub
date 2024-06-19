@@ -14,6 +14,7 @@ import {useTranslation} from 'react-i18next';
 import {Texted} from '../util/element';
 import {Provider} from '../util/storage';
 import {LazyLoadImage} from 'react-lazy-load-image-component';
+import {GlobalFilterContainer} from '../components/util.component';
 import Loader,{SkeletonTheme} from 'react-loading-skeleton';
 import Moment from 'react-moment';
 import SEO from '../view/seo.template';
@@ -39,7 +40,7 @@ const ListPaginatorContainer = ({total,perPage,currentPage,callback}:{
     callback: Dispatch<SetStateAction<number>>
 }) => {
     const {t} = (useTranslation());
-    const {gameContext} = (useContext(GlobalContext));
+    const _label_: string = (t("bfaa3a82v")["split"]("|")[(total["item"] <= 1 ? 0 : 1)]);
     return (
         <nav className="text-center">
             <ul className="pagination d-flex justify-content-center">
@@ -76,13 +77,13 @@ const ListPaginatorContainer = ({total,perPage,currentPage,callback}:{
                     </button>
                 </li>
             </ul>
-            <p>
-                {Texted(t("bfaa3a82"),{
+            <p dangerouslySetInnerHTML={{
+                __html: (Texted(t("bfaa3a82"),{
                     celements: String((currentPage == total["page"]) ? total["item"] : (perPage * currentPage)),
                     telements: String(total["item"]),
-                    game: String(gameContext?.name)["toLowerCase"]()
-                })}
-            </p>
+                    label: _label_
+                }))
+            }}/>
         </nav>
     );
 };
@@ -143,14 +144,15 @@ export const ListHeaderContainer = ({image,title,description,external = false}:{
 
 /** Vista para Mostrar el Listado de los Vídeos Públicos */
 export default function List(){
-    const {gameContext,mutate} = (useContext(GlobalContext));
+    const {gameContext,mutate,mobile,currentFilter} = (useContext(GlobalContext));
     if(!gameContext) return (
         <Navigate to="/"/>
     );
     const {i18n:{language},t} = (useTranslation());
-    const [perPage] = (useState<number>(4));
+    const [perPage,setPerPage] = (useState<number>(4));
     const [currentPage,setPage] = (useState<number>(1));
     const [change,setChange] = (useState<string>());
+    const [character,setCharacter] = (useState<string>());
     const {data,loading} = (useQuery(GraphQLVideoListener,{
         notifyOnNetworkStatusChange: false,
         context: {
@@ -161,12 +163,13 @@ export default function List(){
             a5a9293de: {
                 a3f53e411: perPage,
                 af0afffd2: currentPage
-            }
+            },
+            a564ec1b3: (currentFilter == "637b9a0e-228b-4606-9ec8-baffcf61f6cd" ? undefined : currentFilter),
+            aa2330ddd: character
         }
     }));
     const _navigator_ = (useNavigate());
     const _ctx_: ReactNode[] = [];
-    Moment["globalLocale"] = (language);
     if(loading){
         for(let o = 0; o <= (perPage - 1); o++) _ctx_["push"](
             <div className="col" key={o}>
@@ -204,6 +207,7 @@ export default function List(){
             </Template>
         );
     }else{
+        const {resource}: Application = (Storage["get"]("global"));
         const _dt_: any = (data["fbd45e939"])["rs"];
         return (
             <Template>
@@ -219,19 +223,82 @@ export default function List(){
                         description: gameContext["description"],
                         external: false
                     }}/>
+                    {!mobile && (
+                        <GlobalFilterContainer className=" mb-3" disabled={currentPage > 1} callback={setPerPage} currentPerPage={perPage}/>
+                    )}
                     <div className="row row-cols-1 row-cols-md-2 g-4 mb-3">
                         {(_dt_["ob"] as any[])["map"]((d,i) => (
                             <div className="col" key={i}>
                                 <div className="card">
-                                    <div className="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
+                                    <div className="card-header text-center">
+                                        <div className="d-flex align-items-center">
+                                            <div className="col">
+                                                <i className="far fa-eye"></i>
+                                                <span style={{position:"relative",left:6}}>
+                                                    {Texted(t("c8ad0a14"),{
+                                                        count: (d["view"])
+                                                    })}
+                                                </span>
+                                            </div>
+                                            {d["character"] && (
+                                                <div className="col">
+                                                    <span title={d["character"]["label"]} style={{position:"relative",left:6,cursor:"pointer"}} onClick={event => {
+                                                        event["preventDefault"]();
+                                                        setPage(1);
+                                                        (character ? (setCharacter(undefined)) : (setCharacter(d["character"]["key"])));
+                                                    }}>
+                                                        <LazyLoadImage effect="blur" className="img-thumbnail" src={Provider({
+                                                            identified: (d["character"]["illustration"]["filter"]((t:any) => (t["name"] == "icon"))[0]["key"]),
+                                                            parameter: {
+                                                                format: "webp",
+                                                                width: 64
+                                                            }
+                                                        })}/>
+                                                    </span>
+                                                </div>
+                                            )}
+                                            <div className="col">
+                                                <i className="far fa-calendar"></i>
+                                                <span title={(new Date(Date["parse"](d["createAt"])))["toLocaleString"]()} style={{position:"relative",left:6}}>
+                                                    <Moment fromNow>
+                                                        {d["createAt"]}
+                                                    </Moment>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light" style={{
+                                        position: "relative",
+                                        height: (mobile ? undefined : 300)
+                                    }}>
                                         <LazyLoadImage effect="blur" className="img-fluid" src={Provider({
                                             identified: d["thumbnail"],
                                             parameter: {
-                                                format: "webp"
+                                                format: "webp",
+                                                height: 400,
+                                                quality: 60,
+                                                fit: "inside"
                                             }
+                                        })} placeholderSrc={Provider({
+                                            identified: "884f520d-9fe5-4631-8e97-fdb2e80a3a2e.webp",
+                                            external: true
                                         })}/>
+                                        <div className="mask text-center d-flex align-items-center justify-content-center" style={{
+                                            backgroundImage: "rgba(0,0,0,0.6)"
+                                        }}>
+                                            <LazyLoadImage effect="blur" src={Provider({
+                                                identified: (resource["filter"](({name}) => (name == "logo.png"))[0]["key"]),
+                                                parameter: {
+                                                    format: "webp",
+                                                    height: 256
+                                                }
+                                            })}/>
+                                        </div>
                                     </div>
-                                    <div className="card-body text-center">
+                                    <div className="card-body text-center" style={{
+                                        position: "relative",
+                                        marginBottom: 3
+                                    }}>
                                         <h5 className="card-title" style={{fontSize:18}}>
                                             {Texted(d["title"],{
                                                 hero: d["character"]?.label,
@@ -260,32 +327,6 @@ export default function List(){
                                         }}>
                                             {(typeof(change) == "string" && change == d["key"]) ? t("2f1527132") : t("2f1527131")}
                                         </button>
-                                    </div>
-                                    <div className="card-footer text-center">
-                                        <div className="d-flex align-items-center">
-                                            <div className="col">
-                                                <i className="far fa-eye"></i>
-                                                <span style={{position:"relative",left:6}}>
-                                                    {d["view"]}
-                                                </span>
-                                            </div>
-                                            <div className="col">
-                                                <i className="far fa-calendar"></i>
-                                                <span title={(new Date(Date["parse"](d["createAt"])))["toLocaleString"]()} style={{position:"relative",left:6}}>
-                                                    <Moment fromNow>
-                                                        {d["createAt"]}
-                                                    </Moment>
-                                                </span>
-                                            </div>
-                                            {d["character"] && (
-                                                <div className="col">
-                                                    <i className="fas fa-khanda"></i>
-                                                    <span style={{position:"relative",left:6}}>
-                                                        {d["character"]["label"]}
-                                                    </span>
-                                                </div>
-                                            )}
-                                        </div>
                                     </div>
                                 </div>
                             </div>

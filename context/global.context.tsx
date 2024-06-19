@@ -31,13 +31,15 @@ interface GlobalPrototype {
     /** Identificador Único (UUID) del Vídeo para el Reproductor Local de la Aplicación */
     videoID?: string,
     /** Indicador sí el Dispositivo está en Modo Móvil para la Aplicación */
-    mobile: boolean
+    mobile: boolean,
+    /** Identificador Único (UUID) del Filtro Actual en la Aplicación */
+    currentFilter: string
 };
 
 /** Prototipo con el Objeto con la Acción del Contexto */
 type GlobalAction = {
     /** Nombre del Accionador para la Mutación en el Contexto */
-    action: "AC_DARKMODE_SET" | "AC_GAMECTX_SET" | "AC_VIDEOCTX_SET",
+    action: "AC_DARKMODE_SET" | "AC_GAMECTX_SET" | "AC_VIDEOCTX_SET" | "AC_FILTERCTX_SET",
     /** Dato con los Parámetros Esenciales para el Accionador */
     payload: any
 };
@@ -45,7 +47,8 @@ type GlobalAction = {
 /** Objeto con el Estado Inicial del Contexto */
 export const InitialState: GlobalPrototype = {
     dark: true,
-    mobile: (window["matchMedia"](conditionalMovil)["matches"])
+    mobile: (window["matchMedia"](conditionalMovil)["matches"]),
+    currentFilter: "637b9a0e-228b-4606-9ec8-baffcf61f6cd"
 };
 
 /** Instancia del Contexto para la Aplicación */
@@ -54,6 +57,10 @@ export const Context = (createContext<GlobalPrototype>(InitialState));
 /** Reducedor Local para la Mutación del Estado en el Contexto */
 const Reducer = ((state:GlobalPrototype,{action,payload}:GlobalAction) => {
     switch(action){
+        /** Definición del Filtro Actual para la Aplicación */
+        case "AC_FILTERCTX_SET":
+            state["currentFilter"] = (payload);
+            return {...state};
         /** Definición del Vídeo Currente para el Reproductor Local */
         case "AC_VIDEOCTX_SET":
             state["videoID"] = (payload);

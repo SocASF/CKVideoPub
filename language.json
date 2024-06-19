@@ -12,14 +12,15 @@
             "9c524118": "Publicado ",
             "0ced5c89T": "Lista de los Juegos",
             "0ced5c89D": "Les comparto por este medio los juegos que he jugado, compartiéndoles momentos divertidos y épicos",
-            "7bea6c1f1": "Visualizar",
+            "7bea6c1f1": "Ver los %count% vídeos|Ver el único vídeo",
             "7bea6c1f2": "No Disponible",
             "7bea6c1f3": "Ingresando...",
-            "b171b2b0": "mostrando %celements% de %telements% juegos totales",
+            "b171b2b0": "mostrando <b>%celements%</b> de <b>%telements% juegos totales</b>",
             "58121785": "Listado de los Vídeos de %game%",
             "2f1527131": "Ver Vídeo",
             "2f1527132": "Obteniendo...",
-            "bfaa3a82": "mostrando %celements% de %telements% vídeos de %game% totales",
+            "bfaa3a82": "mostrando <b>%celements%</b> de <b>%telements% %label% totales</b>",
+            "bfaa3a82v": "vídeo|vídeos",
             "c8ad0a14": "%count% vistas",
             "8347d032": "No se ha proporcionado una descripción al vídeo",
             "f440e0a41": "Sugerido",
@@ -31,7 +32,13 @@
             "cc0646f51M": "No estás autorizado para acceder a este recurso",
             "cc0646f52T": "No Encontrado",
             "cc0646f52M": "Lo sentimos, no pudimos encontrar el recurso que está intentando accesar",
-            "bb017663": "Reportar"
+            "bb017663": "Reportar",
+            "883e7c270": "Ordenar por %label%",
+            "883e7c271": "predeterminado",
+            "883e7c272": "alfabéticamente",
+            "883e7c273": "más reciente",
+            "883e7c274": "más popular",
+            "11372d9d": "Mostrar %count% elementos en pantalla"
         }
     },
     "en": {
@@ -47,14 +54,15 @@
             "9c524118": "Published ",
             "0ced5c89T": "Games List",
             "0ced5c89D": "I share with you here the games I have played, sharing fun and epic moments",
-            "7bea6c1f1": "Visualize",
+            "7bea6c1f1": "See the %count% videos|See the only video",
             "7bea6c1f2": "Not Available",
             "7bea6c1f3": "Entering...",
-            "b171b2b0": "showing %celements% of %telements% total games",
+            "b171b2b0": "showing <b>%celements%</b> of <b>%telements% total games</b>",
             "58121785": "List of %game% Videos",
             "2f1527131": "Watch Video",
             "2f1527132": "Getting...",
-            "bfaa3a82": "showing %celements% of %telements% total %game% videos",
+            "bfaa3a82": "showing <b>%celements%</b> of <b>%telements% total %label%</b>",
+            "bfaa3a82v": "video|videos",
             "c8ad0a14": "%count% views",
             "8347d032": "No description provided for the video",
             "f440e0a41": "Suggested",
@@ -66,7 +74,13 @@
             "cc0646f51M": "You are not authorized to access this resource",
             "cc0646f52T": "Not Found",
             "cc0646f52M": "Sorry, we couldn't find the resource you are trying to access",
-            "bb017663": "Report"
+            "bb017663": "Report",
+            "883e7c270": "Sort by %label%",
+            "883e7c271": "default",
+            "883e7c272": "alphabetically",
+            "883e7c273": "latest",
+            "883e7c274": "more popular",
+            "11372d9d": "Show %count% items on screen"
         }
     }
 }

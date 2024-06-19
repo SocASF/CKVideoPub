@@ -9,8 +9,8 @@ import {gql} from '@apollo/client';
 
 /** Esquema GraphQL para la Obtención de Información de los Juegos en Modo Listado para la Aplicación */
 export const GraphQLGameListener = (gql`
-    query c4a720fd($a2a2f7516:f544e1445I) {
-        f544e1445(ac10fa519:$a2a2f7516) {
+    query c4a720fd($a2a2f7516:f544e1445I,$a4dec699b:String) {
+        f544e1445(ac10fa519:$a2a2f7516,a7fc45f1d:$a4dec699b) {
             rs {
                 tt
                 pp
@@ -24,6 +24,7 @@ export const GraphQLGameListener = (gql`
                     createAt
                     available
                     populate
+                    videos
                 }
             }
         }
@@ -32,8 +33,8 @@ export const GraphQLGameListener = (gql`
 
 /** Esquema GraphQL para la Obtención de Información de los Vídeos en Modo Listado para la Aplicación */
 export const GraphQLVideoListener = (gql`
-    query d1f9097b($a4fbcc125:String!,$a5a9293de:fbd45e939I) {
-        fbd45e939(ad73b976c:$a4fbcc125,ac10fa519:$a5a9293de) {
+    query d1f9097b($a4fbcc125:String!,$a5a9293de:fbd45e939I,$a564ec1b3:String,$aa2330ddd:String) {
+        fbd45e939(ad73b976c:$a4fbcc125,ac10fa519:$a5a9293de,a7fc45f1d:$a564ec1b3,a0e95a8b1:$aa2330ddd) {
             rs {
                 tt
                 pp
@@ -42,6 +43,11 @@ export const GraphQLVideoListener = (gql`
                     thumbnail
                     character {
                         label
+                        illustration {
+                            name
+                            key
+                        },
+                        key
                     }
                     view,
                     key,

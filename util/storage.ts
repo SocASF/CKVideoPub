@@ -19,7 +19,8 @@ export const Provider = ({identified,parameter = {},external = false}:{
     const {endpoint,token}: Application = (Local["get"]("global"));
     let _parameter_: string = "";
     (Object["keys"](parameter)["forEach"]((k,i) => {
-        _parameter_ += (`&${k}=${Object["values"](parameter)[i]}`);
+        const _v_: any = (Object["values"](parameter))[i];
+        _parameter_ += (`&${k}=${(typeof(_v_) == "object") ? JSON["stringify"](_v_) : _v_}`);
     }));
     return (external ? `${endpoint["filter"](({name}) => (name == "global"))[0]["path"]["replace"]("cdn",("gb-" + import.meta.env.SCVideoParamKeyAPIKeyAccess["split"]("-")[4]))}/${identified}?v=${token}${_parameter_}`["trim"]() : `${endpoint["filter"](({name}) => (name == "resources"))[0]["path"]}/${identified}?access_token=${token}${_parameter_}`["trim"]());
 };
