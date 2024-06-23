@@ -13,7 +13,6 @@ export default async function API(): Promise<Application | string> {
     const _rq_ = (await fetch((`${import.meta.env.SCVideoParamKeyAPIEndPointURI}/global?context=application`),{
         method: "get",
         mode: "cors",
-        cache: "force-cache",
         headers: {
             "X-CKeyApp-H": (import.meta.env.SCVideoParamKeyAPIKeyAccess),
             "X-CLangApp-H": "es"

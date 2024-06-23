@@ -101,6 +101,7 @@ export const ListHeaderContainer = ({image,title,description,external = false}:{
 }) => {
     const {t} = (useTranslation());
     const {support}: Application = (Storage["get"]("global"));
+    const {gameContext} = (useContext(GlobalContext));
     return (
         <header className={external ? undefined : "mb-3"}>
             <div className="p-5 text-center bg-image" style={{
@@ -123,7 +124,9 @@ export const ListHeaderContainer = ({image,title,description,external = false}:{
                             </h1>
                             {description && (
                                 <h4 className="mb-3">
-                                    {description}
+                                    {Texted(description,{
+                                        type: String(gameContext?.genre)
+                                    })}
                                 </h4>
                             )}
                             {external && (
@@ -235,7 +238,7 @@ export default function List(){
                                             <div className="col">
                                                 <i className="far fa-eye"></i>
                                                 <span style={{position:"relative",left:6}}>
-                                                    {Texted(t("c8ad0a14"),{
+                                                    {Texted(t((d["view"] == 1) ? "c8ad0a141" : "c8ad0a142"),{
                                                         count: (d["view"])
                                                     })}
                                                 </span>
@@ -269,7 +272,8 @@ export default function List(){
                                     </div>
                                     <div className="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light" style={{
                                         position: "relative",
-                                        height: (mobile ? undefined : 300)
+                                        height: (mobile ? undefined : 300),
+                                        borderRadius: 0
                                     }}>
                                         <LazyLoadImage effect="blur" className="img-fluid" src={Provider({
                                             identified: d["thumbnail"],
@@ -283,6 +287,17 @@ export default function List(){
                                             identified: "884f520d-9fe5-4631-8e97-fdb2e80a3a2e.webp",
                                             external: true
                                         })}/>
+                                        <span style={{
+                                            position: "absolute",
+                                            top: 4,
+                                            right: 4,
+                                            background: "rgba(0,0,0,0.6)",
+                                            padding: "0px 6px",
+                                            borderRadius: 6,
+                                            fontWeight: "bold"
+                                        }}>
+                                            {(new Date(1000 * d["duration"]))["toISOString"]()["substring"](11,19)}
+                                        </span>
                                         <div className="mask text-center d-flex align-items-center justify-content-center" style={{
                                             backgroundImage: "rgba(0,0,0,0.6)"
                                         }}>
@@ -297,7 +312,8 @@ export default function List(){
                                     </div>
                                     <div className="card-body text-center" style={{
                                         position: "relative",
-                                        marginBottom: 3
+                                        marginBottom: 4,
+                                        marginTop: -4
                                     }}>
                                         <h5 className="card-title" style={{fontSize:18}}>
                                             {Texted(d["title"],{

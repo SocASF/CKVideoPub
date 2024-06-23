@@ -6,6 +6,17 @@
 @date 08/06/24 08:00PM
 */
 
+/** Generador de un Texto Aleatorio como Hash para la Aplicación */
+export const Random = (len:number = 8): string => {
+    const __: string[] = ["zaqwsxcderfvbgtyhnmjuikloppolikujmnhytgbvfredcxswqaz","09876543211234567890"];
+    let _: string = "";
+    for(let z: number = 0; z <= (len - 1); z++){
+        let ___: string = (__[Math["round"](Math["random"]() * (__["length"] - 1))]);
+        if(Boolean(Math["round"](Math["random"]() * 1))) ___ = ___["toUpperCase"]();
+        _ += (___[Math["round"](Math["random"]() * (___["length"] - 1))]);
+    }return _;
+};
+
 /** Utilidad Esencial para la Mutación del Texto mediante un Objeto */
 export const Texted = (base:string,args:Record<string,string> = {}): string => {
     (Object["keys"](args)["forEach"]((k,i) => {

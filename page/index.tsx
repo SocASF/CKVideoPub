@@ -22,6 +22,21 @@ import SEO from '../view/seo.template';
 import type {ReactNode,Dispatch,SetStateAction} from 'react';
 import type Application from '../types/global';
 
+/** Definición del Enumerador para los Géneros de los Juegos de la Aplicación */
+enum GameGenre {
+    "edb2b3bc2689" = "MOBA",
+    "99fec8b4b9b7" = "MMORPG",
+    "694f94c5fa19" = "ARPG",
+    "34b3b0f5e508" = "SandBox"
+};
+
+/** Definición del Enumerador para las Plataformas de los Juegos de la Aplicación */
+enum GamePlatform {
+    "5d0d179e3b5b" = "66301d0b1",
+    "a1c7495ee3a9" = "66301d0b2",
+    "ff9d4f84de71" = "66301d0b3"
+};
+
 /** Componente Esencial para el Mostrado del Contenedor con la Calificación del Juego en la Aplicación */
 const IndexStarContainer = ({count}:{
     /** Contador de Estrellas a Mostrar en el Contenedor */
@@ -165,9 +180,11 @@ function InitState(){
                             })}/>
                         </div>
                         <div className="col-md-8">
-                            <div className="card-header" />
-                            <div className="card-body">
-                                <SkeletonTheme baseColor="#424242" highlightColor="#C0C0C0">
+                            <SkeletonTheme baseColor="#424242" highlightColor="#C0C0C0">
+                                <div className="card-header">
+                                    <Loader count={1} height={30}/>
+                                </div>
+                                <div className="card-body">
                                     <h5 className="card-title">
                                         <Loader count={1} height={30}/>
                                     </h5>
@@ -180,9 +197,9 @@ function InitState(){
                                             <Loader count={1} height={20} width={150}/>
                                         </small>
                                     </p>
-                                </SkeletonTheme>
                             </div>
                             <div className="card-footer" />
+                            </SkeletonTheme>
                         </div>
                     </div>
                 </div>
@@ -214,12 +231,20 @@ function InitState(){
                 <div className="row mb-3">
                     {(_dt_["ob"] as any[])["map"]((d,i) => {
                         const _buttonText_: string = (t("7bea6c1f1")["split"]("|")[(d["videos"] <= 1 ? 1 : 0)]);
+                        const _defPlatformsC_: string[] = (d["category"] ?? [])["filter"]((t:any) => (t["name"] == "platform"))[0]["value"];
+                        const _defGenreC_: string = (GameGenre as any)[(d["category"] ?? [])["filter"]((y:any) => (y["name"] == "genre"))[0]["value"][0]] ?? "";
+                        let _platforms_: string = "";
+                        (_defPlatformsC_["forEach"]((k,i) => {
+                            let _label_: string = (t((GamePlatform as any)[k]));
+                            if(i == (_defPlatformsC_["length"] - 1)) _platforms_ += _label_;
+                            else _platforms_ += _label_ + " - ";
+                        }));
                         return (
                             <div key={i} className={`col-${mobile ? "12 text-center" : 6} mt-3`}>
                                 <div className="card">
                                     <div className="row g-0">
                                         <div className="col-md-4">
-                                            <LazyLoadImage effect="blur" className="img-fluid rounded-start" src={Provider({
+                                            <LazyLoadImage width={mobile ? undefined : "102%"} effect="blur" className="img-fluid rounded-start" src={Provider({
                                                 identified: d["illustration"]["filter"]((o:any) => (o["name"] == "cover"))[0]["key"],
                                                 parameter: {
                                                     format: "webp"
@@ -227,7 +252,22 @@ function InitState(){
                                             })}/>
                                         </div>
                                         <div className="col-md-8">
-                                            <div className="card-header" />
+                                            <div className="card-header">
+                                                <div className="row text-center">
+                                                    <div className="col">
+                                                        <i style={{position:"relative",marginRight:6}} className="fas fa-desktop"></i>
+                                                        <span>
+                                                            {_platforms_}
+                                                        </span>
+                                                    </div>
+                                                    <div className="col">
+                                                        <i style={{position:"relative",marginRight:6}} className="fas fa-puzzle-piece"></i>
+                                                        <span>
+                                                            {_defGenreC_}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div className="card-body">
                                                 <h5 className="card-title">
                                                     {d["title"]}
@@ -235,7 +275,9 @@ function InitState(){
                                                 <IndexStarContainer count={d["populate"]}/>
                                                 {d["description"] && (
                                                     <p className="card-text">
-                                                        {d["description"]}
+                                                        {Texted(d["description"],{
+                                                            type: _defGenreC_
+                                                        })}
                                                     </p>
                                                 )}
                                                 <p className="card-text" style={{position:"relative",top:-2}}>
@@ -257,7 +299,9 @@ function InitState(){
                                                                 identified: d["key"],
                                                                 name: d["title"],
                                                                 description: d["description"],
-                                                                image: d["illustration"]["filter"]((o:any) => (o["name"] == "background"))[0]["key"]
+                                                                image: d["illustration"]["filter"]((o:any) => (o["name"] == "background"))[0]["key"],
+                                                                genre: _defGenreC_,
+                                                                isMobile: (_defPlatformsC_["includes"]("a1c7495ee3a9"))
                                                             }
                                                         }
                                                     });
@@ -271,7 +315,6 @@ function InitState(){
                                                     })) : t("7bea6c1f2")}
                                                 </button>
                                             </div>
-                                            <div className="card-footer" />
                                         </div>
                                     </div>
                                 </div>

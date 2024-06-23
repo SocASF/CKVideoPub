@@ -11,19 +11,23 @@ import type {ReactNode,Dispatch} from 'react';
 /** Prototipo con el Objeto con la Información para el Contexto del Reproductor */
 interface WatchPrototype {
     /** Funcionalidad para la Mutación del Estado en el Contexto */
-    mutate?: Dispatch<WatchAction>
+    mutate?: Dispatch<WatchAction>,
+    /** Creación de un Comentario Nuevo en Algún Vídeo de la Aplicación */
+    addCommentContext: boolean
 };
 
 /** Prototipo con el Objeto con la Acción del Contexto */
 type WatchAction = {
     /** Nombre del Accionador para la Mutación en el Contexto */
-    action: "",
+    action: "AC_ADDCOMMENT_SHOW",
     /** Dato con los Parámetros Esenciales para el Accionador */
     payload: any
 };
 
 /** Objeto con el Estado Inicial del Contexto */
-export const InitialState: WatchPrototype = {};
+export const InitialState: WatchPrototype = {
+    addCommentContext: false
+};
 
 /** Instancia del Contexto para la Aplicación */
 export const Context = (createContext<WatchPrototype>(InitialState));
@@ -31,6 +35,10 @@ export const Context = (createContext<WatchPrototype>(InitialState));
 /** Reducedor Local para la Mutación del Estado en el Contexto */
 const Reducer = ((state:WatchPrototype,{action,payload}:WatchAction) => {
     switch(action){
+        /** Mutar el Estado para Mostrar el Contenedor de la Añadición de un Nuevo Comentario en la Vista */
+        case "AC_ADDCOMMENT_SHOW":
+            state["addCommentContext"] = (payload);
+            return {...state};
         default:
             return state;
     }

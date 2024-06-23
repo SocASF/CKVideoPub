@@ -25,6 +25,10 @@ export const GraphQLGameListener = (gql`
                     available
                     populate
                     videos
+                    category {
+                        name
+                        value
+                    }
                 }
             }
         }
@@ -49,9 +53,10 @@ export const GraphQLVideoListener = (gql`
                         },
                         key
                     }
-                    view,
-                    key,
+                    view
+                    key
                     createAt
+                    duration
                 }
             }
         }
@@ -77,6 +82,7 @@ export const GraphQLVideoInfo = (gql`
                     }
                     view
                     createAt
+                    populate
                 }
             }
         }
@@ -93,8 +99,46 @@ export const GraphQLVideoSuggest = (gql`
                     thumbnail
                     createAt
                     view
+                    populate
+                    duration
                 }
             }
+        }
+    }
+`);
+
+/** Esquema GraphQL para la Obtención de los Comentarios Públicos Asociados a un Vídeo de la Aplicación */
+export const GraphQLCommentsListener = (gql`
+    query e0c4f52f6($a76ebfc3f:String!,$a6507516:fb48e8d58I!) {
+        fb48e8d58(a7fa34be8:$a76ebfc3f,abbe88fb2:$a6507516) {
+            rs {
+                tt
+                pp
+                ob {
+                    image
+                    createAt
+                    name
+                    message
+                }
+            }
+        }
+    }
+`);
+
+/** Esquema GraphQL para la Mutación de los Me Gusta de algún Vídeo de la Aplicación */
+export const GraphQLMutatedVideoLiked = (gql`
+    mutation e80589ce7($a7fa34be8:String!,$a081fe4a4:Int!) {
+        fd38f7f3e(a4ee44f99:$a7fa34be8,a994efdc3:$a081fe4a4) {
+            ...d4d44e9c8
+        }
+    }
+`);
+
+/** Esquema GraphQL para la Creación de Comentarios en Algún Vídeo de la Aplicación */
+export const GraphQLMutatedCommentAdded = (gql`
+    mutation eb0a52bf5($a6fef6098:String!,$aac96a198:fd613979cI_Value!,$a0a662d02:String) {
+        fd613979c(a7fa34be8:$a6fef6098,ae08f6691:$aac96a198,c55b1270:$a0a662d02) {
+            ...d4d44e9c8
         }
     }
 `);

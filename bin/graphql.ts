@@ -25,6 +25,11 @@ const GraphQL = (new ApolloClient({
                 key
                 description
             }
+            fragment d4d44e9c8 on GraphQLMutatedResponse {
+                status
+                message
+                context
+            }
         `))
     })),
     link: from([
