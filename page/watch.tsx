@@ -133,7 +133,9 @@ const AddonCommentInputTXT = ({attribute,placeholder,ctxEditor,ctxValue,initialV
             outline: "none",
             overflow: "hidden",
             height: (attribute == "message" ? 100 : undefined),
-            whiteSpace: "normal"
+            whiteSpace: "normal",
+            textAlign: "justify",
+            textAlignLast: "center"
         }} defaultValue={initialValueFromOrigin[attribute] ?? ""} maxLength={attribute == "message" ? 150 : 40} minLength={4} {...{placeholder}} onChange={event => {
             event["preventDefault"]();
             ctxValue(older => {
