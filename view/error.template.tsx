@@ -13,10 +13,12 @@ import Template from './default.template';
 
 /** Plantilla Esencial para el Mostradod de los Errores Generales de la Aplicación */
 export default function Error(){
-    let _metadata_: any = {};
     const {t} = (useTranslation());
     const router = (useRouteError());
-    if(isRouteErrorResponse(router)) switch(router["status"]){
+    let _metadata_: any = {
+        title: (t("cc0646f53T")),
+        description: (t("cc0646f53M"))
+    };if(isRouteErrorResponse(router)) switch(router["status"]){
         case 403:
             _metadata_["title"] = (t("cc0646f51T"));
             _metadata_["description"] = (t("cc0646f51M"));

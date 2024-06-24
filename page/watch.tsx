@@ -221,7 +221,7 @@ const AddonCommentContainer = ({image,editor,createAt,message,name}:ProtoAddonCo
                         </div>
                         <div className="col-md-8">
                             <div className="card-header">
-                                <h6 className="fw-bold mb-1 d-flex align-items-left">
+                                <h6 className="fw-bold mb-1">
                                     {avatar ? (
                                         <span>
                                             {showEditor["name"] ? (
@@ -246,7 +246,7 @@ const AddonCommentContainer = ({image,editor,createAt,message,name}:ProtoAddonCo
                                 </h6>
                             </div>
                             <div className="card-body">
-                                <p className="mb-0 d-flex align-items-left">
+                                <p className="mb-0">
                                     <span>
                                         {showEditor["message"] ? (
                                             <AddonCommentInputTXT initialValueFromOrigin={content} ctxEditor={setShowEditor} ctxValue={setContent} placeholder={t("f1e2c4834a")} attribute="message"/>
@@ -264,7 +264,7 @@ const AddonCommentContainer = ({image,editor,createAt,message,name}:ProtoAddonCo
                                     </span>
                                 </p>
                             </div>
-                            <div className="card-footer d-flex align-items-left">
+                            <div className="card-footer">
                                 {editor ? (
                                     <div className="row">
                                         <div className="col">
