@@ -57,6 +57,7 @@ export const GraphQLVideoListener = (gql`
                     key
                     createAt
                     duration
+                    endpoint
                 }
             }
         }
@@ -127,8 +128,8 @@ export const GraphQLCommentsListener = (gql`
 
 /** Esquema GraphQL para la Mutación de los Me Gusta de algún Vídeo de la Aplicación */
 export const GraphQLMutatedVideoLiked = (gql`
-    mutation e80589ce7($a7fa34be8:String!,$a081fe4a4:Int!) {
-        fd38f7f3e(a4ee44f99:$a7fa34be8,a994efdc3:$a081fe4a4) {
+    mutation e80589ce7($a7fa34be8:String!,$a081fe4a4:Int!,$acd480dd9:String!) {
+        fd38f7f3e(a4ee44f99:$a7fa34be8,a994efdc3:$a081fe4a4,afa7aeffb:$acd480dd9) {
             ...d4d44e9c8
         }
     }

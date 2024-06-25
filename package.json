@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.10.3",
+    "@cloudflare/stream-react": "^1.9.1",
     "crypto-hash": "^3.0.0",
     "graphql": "^16.8.1",
     "i18next": "^23.11.5",

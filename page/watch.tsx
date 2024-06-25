@@ -14,6 +14,7 @@ import {useTranslation} from 'react-i18next';
 import {GraphQLVideoInfo,GraphQLVideoSuggest,GraphQLMutatedVideoLiked,GraphQLMutatedCommentAdded,GraphQLCommentsListener} from '../util/graphql';
 import {Texted,Random} from '../util/element';
 import {LazyLoadImage} from 'react-lazy-load-image-component';
+import {Stream} from '@cloudflare/stream-react';
 import Storage,{Provider} from '../util/storage';
 import Loader,{SkeletonTheme} from 'react-loading-skeleton';
 import Moment from 'react-moment';
@@ -534,7 +535,8 @@ const WatchLikeContainer = ({currentLiked,videoID}:{
                 mutate({
                     variables: {
                         a7fa34be8: videoID,
-                        a081fe4a4: currentLiked
+                        a081fe4a4: currentLiked,
+                        acd480dd9: "like"
                     },
                     context: {
                         language
@@ -758,7 +760,7 @@ const WatchSuggestContainer = ({character}:{
                 maxHeight: 500,
                 minHeight: 250
             }}>
-                <section className="pb-4">
+                <section className="pb-4 mb-2">
                     <ul className="nav nav-pills mt-2 mb-3 d-flex justify-content-center">
                         {([
                             {
@@ -793,26 +795,36 @@ const WatchSuggestContainer = ({character}:{
 };
 
 /** Componente con el Contenedor del Reproductor para la Vista */
-const WatchPlayerContainer = ({uri,mobile}:{
+const WatchPlayerContainer = ({uri,videoID,view}:{
     /** Ruta Absoluta HTTP del Punto Final del Incrustado para Mostrar el Video */
     uri: string,
-    /** Indicador de Sí el Vídeo de Origen es de Móvil */
-    mobile: boolean
+    /** Identificador Único (UUID) del Vídeo Actual */
+    videoID: string,
+    /** Vistas Actuales del Vídeo Currente */
+    view: number
 }) => {
+    const {i18n:{language}} = (useTranslation());
+    const [one,setOne] = (useState<boolean>(false));
+    const [mutate] = (useMutation(GraphQLMutatedVideoLiked,{
+        ignoreResults: true
+    }));
     return (
-        <div className="mt-3 mb-2" style={{
-            position: "relative",
-            paddingTop: (mobile ? "45.1%" : "56.30%"),
-            backgroundColor: "#303030"
-        }}>
-            <iframe src={uri} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" loading="lazy" allowFullScreen style={{
-                border: 0,
-                position: "absolute",
-                top: 0,
-                height: "100%",
-                width: "100%"
-            }}/>
-        </div>
+        <Stream responsive className="mt-2 mb-2" controls src={uri} onPlay={event => {
+            event["preventDefault"]();
+            if(!one){
+                setOne(true);
+                mutate({
+                    context: {
+                        language
+                    },
+                    variables: {
+                        a7fa34be8: videoID,
+                        a081fe4a4: view,
+                        acd480dd9: "view"
+                    }
+                });
+            };
+        }}/>
     );
 };
 
@@ -891,7 +903,7 @@ export default function Watch(){
             <Template>
                 <SkeletonTheme baseColor="#303030">
                     <div className="container">
-                        <Loader className="mt-3 mb-2" count={1} height={gameContext!["isMobile"] ? 500 : 700}/>
+                        <Loader className="mt-3 mb-2" count={1} height={700}/>
                         <div className="row">
                             <div className="col-8">
                                 <Loader className="mb-2" count={1} height={80}/>
@@ -921,7 +933,7 @@ export default function Watch(){
                 }}>
                     <div>
                         <div className="container">
-                            <WatchPlayerContainer uri={_dt_["endpoint"]} mobile={gameContext!["isMobile"]}/>
+                            <WatchPlayerContainer uri={_dt_["endpoint"]} view={_dt_["view"]} {...{videoID}}/>
                             <div className={mobile ? undefined : "row"}>
                                 <div className={mobile ? undefined: "col-8"}>
                                     <div className="row d-flex align-items-center">

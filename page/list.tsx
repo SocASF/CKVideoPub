@@ -156,6 +156,7 @@ export default function List(){
     const [currentPage,setPage] = (useState<number>(1));
     const [change,setChange] = (useState<string>());
     const [character,setCharacter] = (useState<string>());
+    const [preview,setPreview] = (useState<string>());
     const {data,loading} = (useQuery(GraphQLVideoListener,{
         notifyOnNetworkStatusChange: false,
         context: {
@@ -274,15 +275,26 @@ export default function List(){
                                         position: "relative",
                                         height: (mobile ? undefined : 300),
                                         borderRadius: 0
+                                    }} onMouseOver={event => {
+                                        event["preventDefault"]();
+                                        setPreview(d["key"]);
+                                    }} onMouseOut={event => {
+                                        event["preventDefault"]();
+                                        setPreview(undefined);
                                     }}>
                                         <LazyLoadImage effect="blur" className="img-fluid" src={Provider({
-                                            identified: d["thumbnail"],
-                                            parameter: {
+                                            identified: ((preview == d["key"]) ? "https://customer-heuyynmupaqqo5q1.cloudflarestream.com/key/thumbnails/thumbnail.gif?duration=6s"["replace"]("key",(d["endpoint"])) : d["thumbnail"]),
+                                            external: (preview == d["key"]),
+                                            parameter: ((preview == d["key"]) ? {
+                                                time: (Math["round"](d["duration"] / 2) + "s"),
+                                                height: 600,
+                                                fit: "clip"
+                                            } : {
                                                 format: "webp",
                                                 height: 400,
                                                 quality: 60,
                                                 fit: "inside"
-                                            }
+                                            })
                                         })} placeholderSrc={Provider({
                                             identified: "884f520d-9fe5-4631-8e97-fdb2e80a3a2e.webp",
                                             external: true

@@ -28,9 +28,7 @@ interface GlobalPrototype {
         /** Identificador Único (UUID) del Fondo de Pantalla del Juego desde la Base de Datos */
         image: string,
         /** Definición del Género del Juego Actual desde la Base de Datos */
-        genre: string,
-        /** Indicador para Determinar la Anchura del Incrustamiento del Vídeo en Base de Sí el Vídeo es Totalmente para Móvil desde la Base de Datos */
-        isMobile: boolean
+        genre: string
     },
     /** Identificador Único (UUID) del Vídeo para el Reproductor Local de la Aplicación */
     videoID?: string,

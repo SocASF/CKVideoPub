@@ -300,8 +300,7 @@ function InitState(){
                                                                 name: d["title"],
                                                                 description: d["description"],
                                                                 image: d["illustration"]["filter"]((o:any) => (o["name"] == "background"))[0]["key"],
-                                                                genre: _defGenreC_,
-                                                                isMobile: (_defPlatformsC_["includes"]("a1c7495ee3a9"))
+                                                                genre: _defGenreC_
                                                             }
                                                         }
                                                     });

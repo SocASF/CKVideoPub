@@ -22,7 +22,7 @@ export const Provider = ({identified,parameter = {},external = false}:{
         const _v_: any = (Object["values"](parameter))[i];
         _parameter_ += (`&${k}=${(typeof(_v_) == "object") ? JSON["stringify"](_v_) : _v_}`);
     }));
-    return (external ? `${endpoint["filter"](({name}) => (name == "global"))[0]["path"]["replace"]("cdn",("gb-" + import.meta.env.SCVideoParamKeyAPIKeyAccess["split"]("-")[4]))}/${identified}?v=${token}${_parameter_}`["trim"]() : `${endpoint["filter"](({name}) => (name == "resources"))[0]["path"]}/${identified}?access_token=${token}${_parameter_}`["trim"]());
+    return (external ? (identified["startsWith"]("http") ? (identified + _parameter_) : `${endpoint["filter"](({name}) => (name == "global"))[0]["path"]["replace"]("cdn",("gb-" + import.meta.env.SCVideoParamKeyAPIKeyAccess["split"]("-")[4]))}/${identified}?v=${token}${_parameter_}`["trim"]()) : `${endpoint["filter"](({name}) => (name == "resources"))[0]["path"]}/${identified}?access_token=${token}${_parameter_}`["trim"]());
 };
 
 /** Definición del Almacenamiento Local de la Aplicación */
