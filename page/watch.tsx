@@ -626,7 +626,7 @@ const WatchListSuggestContainer = ({character}:{
         return (_dt_["length"] == 0 ? (
             <AddonContainerError message={t("6d49b11e")} style={{
                 position: "relative",
-                top: (mobile ? 8 : 32)
+                top: (mobile ? 8 : 15)
             }}/>
         ) : (
             <div className="row row-cols-1" style={{marginBottom:-30}}>
@@ -719,6 +719,7 @@ const WatchSuggestContainer = ({character}:{
 }) => {
     const [current,setCurrent] = (useState<string>("740c291d"));
     const {gameContext,mobile} = (useContext(GlobalContext));
+    const {addCommentContext} = (useContext(WatchContext));
     const {t} = (useTranslation());
     let _container_: ReactNode = null;
     switch(current){
@@ -757,8 +758,7 @@ const WatchSuggestContainer = ({character}:{
     }return (
         <section className="pb-4">
             <div className={mobile ? "border rounded-5" : "border rounded-5 overflow-auto"} style={mobile ? undefined : {
-                maxHeight: 500,
-                minHeight: 250
+                maxHeight: (addCommentContext ? 780 : 635)
             }}>
                 <section className="pb-4 mb-2">
                     <ul className="nav nav-pills mt-2 mb-3 d-flex justify-content-center">
@@ -840,6 +840,7 @@ const WatchInformationContainer = ({title,description,views,uploadAt}:{
     uploadAt: string
 }) => {
     const [active,setActive] = (useState<boolean>(false));
+    const {mobile} = (useContext(GlobalContext));
     const {t} = (useTranslation());
     return (
         <div className="accordion accordion-borderless mb-2" id="WatchAcordionMoreInformation">
@@ -852,9 +853,13 @@ const WatchInformationContainer = ({title,description,views,uploadAt}:{
                         <div className="container">
                             <div className="row">
                                 <div className="col-6">
-                                    <small>
+                                    <small style={{
+                                        fontSize: 12.1,
+                                        position: "relative",
+                                        top: -2
+                                    }}>
                                         <strong>
-                                            {title}
+                                            {(mobile ? title : (active ? title : title["substring"](0,48) + "..."))}
                                         </strong>
                                     </small>
                                 </div>
@@ -903,14 +908,14 @@ export default function Watch(){
             <Template>
                 <SkeletonTheme baseColor="#303030">
                     <div className="container">
-                        <Loader className="mt-3 mb-2" count={1} height={700}/>
                         <div className="row">
                             <div className="col-8">
-                                <Loader className="mb-2" count={1} height={80}/>
+                                <Loader className="mt-2 mb-2" count={1} height={400}/>
+                                <Loader className="mb-2" count={1} height={60}/>
                                 <Loader className="mb-2" count={1} height={348}/>
                             </div>
-                            <div className="col-4">
-                                <Loader className="mb-3" count={1} height={442}/>
+                            <div className="col-4 mt-1">
+                                <Loader className="mb-3" count={1} height={833}/>
                             </div>
                         </div>
                     </div>
@@ -933,9 +938,9 @@ export default function Watch(){
                 }}>
                     <div>
                         <div className="container">
-                            <WatchPlayerContainer uri={_dt_["endpoint"]} view={_dt_["view"]} {...{videoID}}/>
                             <div className={mobile ? undefined : "row"}>
-                                <div className={mobile ? undefined: "col-8"}>
+                                <div className={mobile ? undefined : "col-8"}>
+                                    <WatchPlayerContainer uri={_dt_["endpoint"]} view={_dt_["view"]} {...{videoID}}/>
                                     <div className="row d-flex align-items-center">
                                         <div className={mobile ? undefined : "col-10"}>
                                             <WatchInformationContainer {...{
@@ -961,7 +966,7 @@ export default function Watch(){
                                         <WatchCommentsContainer />
                                     )}
                                 </div>
-                                <div className={mobile ? undefined : "col-4"}>
+                                <div className={mobile ? undefined : "col-4 mt-2"}>
                                     <WatchSuggestContainer character={_dt_["character"]}/>
                                 </div>
                             </div>

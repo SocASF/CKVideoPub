@@ -255,7 +255,8 @@ export default function List(){
                                                             identified: (d["character"]["illustration"]["filter"]((t:any) => (t["name"] == "icon"))[0]["key"]),
                                                             parameter: {
                                                                 format: "webp",
-                                                                width: 64
+                                                                width: 64,
+                                                                height: 64
                                                             }
                                                         })}/>
                                                     </span>
@@ -273,8 +274,8 @@ export default function List(){
                                     </div>
                                     <div className="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light" style={{
                                         position: "relative",
-                                        height: (mobile ? undefined : 300),
-                                        borderRadius: 0
+                                        borderRadius: 0,
+                                        height: (mobile ? undefined : 300)
                                     }} onMouseOver={event => {
                                         event["preventDefault"]();
                                         setPreview(d["key"]);
@@ -287,13 +288,12 @@ export default function List(){
                                             external: (preview == d["key"]),
                                             parameter: ((preview == d["key"]) ? {
                                                 time: (Math["round"](d["duration"] / 2) + "s"),
-                                                height: 600,
+                                                height: 400,
                                                 fit: "clip"
                                             } : {
                                                 format: "webp",
                                                 height: 400,
-                                                quality: 60,
-                                                fit: "inside"
+                                                quality: 60
                                             })
                                         })} placeholderSrc={Provider({
                                             identified: "884f520d-9fe5-4631-8e97-fdb2e80a3a2e.webp",
@@ -338,7 +338,7 @@ export default function List(){
                                                 {Texted(d["description"],{
                                                     hero: d["character"]?.label,
                                                     game: gameContext?.name
-                                                })["substring"](0,144)}...
+                                                })["substring"](0,100)}...
                                             </p>
                                         )}
                                         <button disabled={(typeof(change) == "string")} className="btn btn-primary" data-mdb-ripple-init onClick={event => {
