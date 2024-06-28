@@ -13,20 +13,23 @@ interface WatchPrototype {
     /** Funcionalidad para la Mutación del Estado en el Contexto */
     mutate?: Dispatch<WatchAction>,
     /** Creación de un Comentario Nuevo en Algún Vídeo de la Aplicación */
-    addCommentContext: boolean
+    addCommentContext: boolean,
+    /** Modo de Pantalla Grande para el Reproductor del Vídeo */
+    fullScreen: boolean
 };
 
 /** Prototipo con el Objeto con la Acción del Contexto */
 type WatchAction = {
     /** Nombre del Accionador para la Mutación en el Contexto */
-    action: "AC_ADDCOMMENT_SHOW",
+    action: "AC_ADDCOMMENT_SHOW" | "AC_CHGFSCREEN_SET",
     /** Dato con los Parámetros Esenciales para el Accionador */
     payload: any
 };
 
 /** Objeto con el Estado Inicial del Contexto */
 export const InitialState: WatchPrototype = {
-    addCommentContext: false
+    addCommentContext: false,
+    fullScreen: false
 };
 
 /** Instancia del Contexto para la Aplicación */
@@ -38,6 +41,9 @@ const Reducer = ((state:WatchPrototype,{action,payload}:WatchAction) => {
         /** Mutar el Estado para Mostrar el Contenedor de la Añadición de un Nuevo Comentario en la Vista */
         case "AC_ADDCOMMENT_SHOW":
             state["addCommentContext"] = (payload);
+            return {...state};
+        case "AC_CHGFSCREEN_SET":
+            state["fullScreen"] = (payload);
             return {...state};
         default:
             return state;

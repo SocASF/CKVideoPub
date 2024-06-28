@@ -518,7 +518,8 @@ const WatchLikeContainer = ({currentLiked,videoID}:{
     const [liked,setLiked] = (useState<boolean>(false));
     const [mutate,{error,data}] = (useMutation(GraphQLMutatedVideoLiked));
     const {t,i18n:{language}} = (useTranslation());
-    const {mutate:contextMutated,addCommentContext} = (useContext(WatchContext));
+    const {mutate:contextMutated,addCommentContext,fullScreen} = (useContext(WatchContext));
+    const {mobile} = (useContext(GlobalContext));
     useEffect(() => {
         if(error && liked) setLiked(false);
         if(data && !data["fd38f7f3e"]["status"]) setLiked(false);
@@ -526,9 +527,26 @@ const WatchLikeContainer = ({currentLiked,videoID}:{
     return (
         <div className="btn-group shadow-0" style={{
             position: "relative",
-            width: "100%",
-            marginTop: 1
+            width: "100%"
         }}>
+            <button title={t("f85488a83")} className="btn btn-outline-secondary text-center" data-mdb-color="dark" data-mdb-ripple-init disabled={mobile} onClick={event => {
+                event["preventDefault"]();
+                contextMutated!({
+                    action: "AC_CHGFSCREEN_SET",
+                    payload: (!fullScreen)
+                });
+            }}>
+                <i className={`fas fa-${fullScreen ? "down-left-and-up-right-to-center" : "up-right-and-down-left-from-center"}`}></i>
+            </button>
+            <button title={t("f85488a82")} className="btn btn-outline-secondary" data-mdb-color="dark" data-mdb-ripple-init disabled={addCommentContext} onClick={event => {
+                event["preventDefault"]();
+                contextMutated!({
+                    action: "AC_ADDCOMMENT_SHOW",
+                    payload: true
+                });
+            }}>
+                <i className="fas fa-comment-medical"></i>
+            </button>
             <button title={t("f85488a81")} className="btn btn-outline-secondary text-center" data-mdb-color="dark" data-mdb-ripple-init disabled={liked} onClick={event => {
                 event["preventDefault"]();
                 setLiked(true);
@@ -544,21 +562,6 @@ const WatchLikeContainer = ({currentLiked,videoID}:{
                 });
             }}>
                 <i className="far fa-thumbs-up"></i>
-                <strong style={{
-                    position: "relative",
-                    right: 0
-                }}>
-                    {(data ? data["fd38f7f3e"]["context"]["newLikedContext"] : currentLiked)}
-                </strong>
-            </button>
-            <button title={t("f85488a82")} className="btn btn-outline-secondary" data-mdb-color="dark" data-mdb-ripple-init disabled={addCommentContext} onClick={event => {
-                event["preventDefault"]();
-                contextMutated!({
-                    action: "AC_ADDCOMMENT_SHOW",
-                    payload: true
-                });
-            }}>
-                <i className="fas fa-comment-medical"></i>
             </button>
         </div>
     );
@@ -719,7 +722,7 @@ const WatchSuggestContainer = ({character}:{
 }) => {
     const [current,setCurrent] = (useState<string>("740c291d"));
     const {gameContext,mobile} = (useContext(GlobalContext));
-    const {addCommentContext} = (useContext(WatchContext));
+    const {addCommentContext,fullScreen} = (useContext(WatchContext));
     const {t} = (useTranslation());
     let _container_: ReactNode = null;
     switch(current){
@@ -757,10 +760,10 @@ const WatchSuggestContainer = ({character}:{
         break;
     }return (
         <section className="pb-4">
-            <div className={mobile ? "border rounded-5" : "border rounded-5 overflow-auto"} style={mobile ? undefined : {
-                maxHeight: (addCommentContext ? 780 : 635)
+            <div className={mobile ? "border rounded-5" : "border rounded-5 overflow-auto"} style={{
+                maxHeight: ((addCommentContext && !fullScreen) ? "54.5rem" : "45.6rem")
             }}>
-                <section className="pb-4 mb-2">
+                <section className="pb-4">
                     <ul className="nav nav-pills mt-2 mb-3 d-flex justify-content-center">
                         {([
                             {
@@ -809,7 +812,7 @@ const WatchPlayerContainer = ({uri,videoID,view}:{
         ignoreResults: true
     }));
     return (
-        <Stream responsive className="mt-2 mb-2" controls src={uri} onPlay={event => {
+        <Stream responsive className="mt-3 mb-2" controls src={uri} onPlay={event => {
             event["preventDefault"]();
             if(!one){
                 setOne(true);
@@ -824,6 +827,8 @@ const WatchPlayerContainer = ({uri,videoID,view}:{
                     }
                 });
             };
+        }} onPause={event => {
+            console.log(event["timeStamp"]);
         }}/>
     );
 };
@@ -859,7 +864,7 @@ const WatchInformationContainer = ({title,description,views,uploadAt}:{
                                         top: -2
                                     }}>
                                         <strong>
-                                            {(mobile ? title : (active ? title : title["substring"](0,48) + "..."))}
+                                            {(mobile ? title : (active ? title : title["substring"](0,40) + "..."))}
                                         </strong>
                                     </small>
                                 </div>
@@ -893,6 +898,7 @@ export default function Watch(){
         <Navigate to="/"/>
     );
     const {i18n:{language}} = (useTranslation());
+    const {fullScreen} = (useContext(WatchContext));
     const {loading,data} = (useQuery(GraphQLVideoInfo,{
         notifyOnNetworkStatusChange: false,
         context: {
@@ -908,13 +914,13 @@ export default function Watch(){
             <Template>
                 <SkeletonTheme baseColor="#303030">
                     <div className="container">
-                        <div className="row">
-                            <div className="col-8">
-                                <Loader className="mt-2 mb-2" count={1} height={400}/>
+                        <div className={mobile ? undefined : "row"}>
+                            <div className={mobile ? undefined : "col-8"}>
+                                <Loader className="mt-3 mb-2" count={1} height={400}/>
                                 <Loader className="mb-2" count={1} height={60}/>
                                 <Loader className="mb-2" count={1} height={348}/>
                             </div>
-                            <div className="col-4 mt-1">
+                            <div className={mobile ? undefined : "col-4 mt-3"}>
                                 <Loader className="mb-3" count={1} height={833}/>
                             </div>
                         </div>
@@ -939,36 +945,47 @@ export default function Watch(){
                     <div>
                         <div className="container">
                             <div className={mobile ? undefined : "row"}>
-                                <div className={mobile ? undefined : "col-8"}>
+                                <div className={mobile ? undefined : (fullScreen ? "col-12" : "col-8")}>
                                     <WatchPlayerContainer uri={_dt_["endpoint"]} view={_dt_["view"]} {...{videoID}}/>
-                                    <div className="row d-flex align-items-center">
-                                        <div className={mobile ? undefined : "col-10"}>
-                                            <WatchInformationContainer {...{
-                                                title: Texted(_dt_["title"],{
-                                                    hero: _dt_["character"]?.label,
-                                                    game: String(gameContext?.name)
-                                                }),
-                                                description: Texted(_dt_["description"],{
-                                                    hero: _dt_["character"]?.label,
-                                                    game: String(gameContext?.name)
-                                                }),
-                                                views: _dt_["view"],
-                                                uploadAt: _dt_["createAt"]
-                                            }}/>
+                                    <div className={(fullScreen && !mobile) ? "row" : undefined}>
+                                        <div className={(fullScreen && !mobile) ? "col-8" : undefined}>
+                                            <div className="row d-flex align-items-center">
+                                                <div className={mobile ? undefined : "col-9"}>
+                                                    <WatchInformationContainer {...{
+                                                        title: Texted(_dt_["title"],{
+                                                            hero: _dt_["character"]?.label,
+                                                            game: String(gameContext?.name)
+                                                        }),
+                                                        description: Texted(_dt_["description"],{
+                                                            hero: _dt_["character"]?.label,
+                                                            game: String(gameContext?.name)
+                                                        }),
+                                                        views: _dt_["view"],
+                                                        uploadAt: _dt_["createAt"]
+                                                    }}/>
+                                                </div>
+                                                {!mobile && (
+                                                    <div className="col-3 mb-2">
+                                                        <WatchLikeContainer currentLiked={_dt_["populate"]} {...{videoID}}/>
+                                                    </div>
+                                                )}
+                                            </div>
+                                            {!mobile && (
+                                                <WatchCommentsContainer />
+                                            )}
                                         </div>
-                                        {!mobile && (
-                                            <div className="col-2 mb-2">
-                                                <WatchLikeContainer currentLiked={_dt_["populate"]} {...{videoID}}/>
+                                        {(fullScreen && !mobile) && (
+                                            <div className={fullScreen ? "col-4" : undefined}>
+                                                <WatchSuggestContainer character={_dt_["character"]}/>
                                             </div>
                                         )}
                                     </div>
-                                    {!mobile && (
-                                        <WatchCommentsContainer />
-                                    )}
                                 </div>
-                                <div className={mobile ? undefined : "col-4 mt-2"}>
-                                    <WatchSuggestContainer character={_dt_["character"]}/>
-                                </div>
+                                {!fullScreen && (
+                                    <div className={mobile ? undefined : "col-4 mt-3"}>
+                                        <WatchSuggestContainer character={_dt_["character"]}/>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
